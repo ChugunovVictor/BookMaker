@@ -1,4 +1,4 @@
-package bloodboneflesh.code;
+package org.bloodboneflesh.books;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,54 +15,40 @@ import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotation;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationLink;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDBorderStyleDictionary;
 import org.apache.pdfbox.pdmodel.interactive.documentnavigation.destination.PDPageXYZDestination;
+import org.bloodboneflesh.PreText;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class BookMaker {
-    // int link_counter = 5;
-    // https://parahumans.wordpress.com/
-    // http://www.twogag.com/
+public abstract class Book {
+    String book_author;
+    String book_title;
     
-    String book_author = "John McCrae";
-    String book_title = "Worm";
-    String book_file = book_author + " - " + book_title + ".pdf";
-    
-    String adress_to_start  = "https://parahumans.wordpress.com/2011/06/11/1-1/";
-    String selector_content = "#content .entry-content p:not(p:contains(Next Chapter))"; //"#content .entry-content p:not(p:has(a[title=Next Chapter]))";
-    String selector_title   = "#content .entry-title";
-    String selector_navigation_next = "#content .nav-next a[href]";
-        
     int number_of_rows_on_page = 38;
+    int number_of_images_on_page = 3;
     float fontSize = 12;
     float margin = 50;
     float width = 620 - 2*margin;
 
-    PDFont font_standart = PDType1Font.TIMES_ROMAN;    //PDType0Font.load(document, new File("times.ttf")); 
-    PDFont font_italic   = PDType1Font.TIMES_ITALIC;   //PDType0Font.load(document, new File("timesi.ttf")); 
-    PDFont font_bold     = PDType1Font.TIMES_BOLD;     //PDType0Font.load(document, new File("timesbd.ttf"));
+    public static PDFont font_standart = PDType1Font.TIMES_ROMAN;    //PDType0Font.load(document, new File("times.ttf")); 
+    public static PDFont font_italic   = PDType1Font.TIMES_ITALIC;   //PDType0Font.load(document, new File("timesi.ttf")); 
+    public static PDFont font_bold     = PDType1Font.TIMES_BOLD;     //PDType0Font.load(document, new File("timesbd.ttf"));
     
-    /* Want to put table of contents before all paragraphes. 
-       to calculate it, need to save info in someplace before print */
-    class PreText{
-        String title;
-        String context;
-        List<String> lines;
-        List<PDPage> pages = new ArrayList<PDPage>();
-        int page_for_table_of_content;
-
-        public PreText(String title, String context, PDFont font) throws IOException {
-            this.title = title;
-            this.context = context;
-            this.lines = calculateLines(font, this.context);
+    public void printText(String[] texts, PDFont font, float fontSize, float offset_x, 
+            float offset_y, float offset_dy, PDPageContentStream contentStream) throws IOException{
+        contentStream.beginText();
+        contentStream.setFont(font, fontSize);
+        for( String text : texts ){
+            contentStream.newLineAtOffset(offset_x, offset_y);
+            try{
+                contentStream.showText(text);
+            }catch(java.lang.IllegalArgumentException ex){
+                contentStream.showText(excludeUnsupportedSymbols(font, text)); 
+            }
+            offset_y += offset_dy;
         }
-        
-        public PreText(String title, List<String> lines, int page) {
-            this.title = title;
-            this.lines = lines;
-            this.page_for_table_of_content = page;
-        }
+        contentStream.endText();
     }
     
     public void addHiperLink(PDDocument target_document, PDPage target_page, float offset_y, String link_text, int page_number, PDPage link_to) throws IOException{
@@ -71,23 +57,12 @@ public class BookMaker {
         // First add some text, two lines we'll add some annotations to this later
         PDFont font = PDType1Font.TIMES_ROMAN;
         PDPageContentStream contents = new PDPageContentStream(target_document, target_page, true, true);
-       
-        contents.beginText();
-        contents.setFont(font, fontSize);
-        contents.newLineAtOffset(margin, offset_y);
-        try{
-            contents.showText(link_text);
-        }catch(java.lang.IllegalArgumentException ex){
-            contents.showText(excludeUnsupportedSymbols(font, link_text)); 
-        }
-        contents.endText();
-        
-        contents.beginText();
-        contents.setFont(font, fontSize);
-        contents.newLineAtOffset(target_page.getMediaBox().getWidth() - margin - getStringWidth(font, String.valueOf(page_number)) / 1000 * fontSize, offset_y);
-        contents.showText(String.valueOf(page_number));
-        contents.endText();
-        
+            
+        printText(new String[]{ link_text }, font, fontSize, margin, offset_y, 0, contents);
+        printText(new String[]{ String.valueOf(page_number) }, font, fontSize, 
+            target_page.getMediaBox().getWidth() - margin - getStringWidth(font, 
+            String.valueOf(page_number)) / 1000 * fontSize, offset_y, 0, contents);
+                
         float max_width = target_page.getMediaBox().getWidth() - margin * 2;
         float still_free = max_width - getStringWidth(font, String.valueOf(page_number)) / 1000 * fontSize - getStringWidth(font, link_text) / 1000 * fontSize;
         float point_width = getStringWidth(font, ".")  / 1000 * fontSize;
@@ -97,11 +72,8 @@ public class BookMaker {
             points += ".";
         }
         
-        contents.beginText();
-        contents.setFont(font, fontSize);
-        contents.newLineAtOffset(margin + getStringWidth(font, link_text) / 1000 * fontSize, offset_y);
-        contents.showText(points);
-        contents.endText();
+        printText(new String[]{ points }, font, fontSize, margin + getStringWidth(font, link_text) / 1000 * fontSize, offset_y, 0, contents);
+        
         contents.close();
         
         // Now add the link annotation, so the click on "Jump to page three" works
@@ -134,60 +106,10 @@ public class BookMaker {
 
         annotations.add(pageLink);      
     }
-        
-    public BookMaker() throws IOException{
-        
-        //int counter = 4;
-        Document doc = Jsoup.connect(adress_to_start).timeout(0).get();
-        //Document doc = Jsoup.parse(new URL(adress_to_start).openStream(), "UTF-8", adress_to_start);
-        
-        PDDocument document = new PDDocument();
-        
-        ArrayList <PreText> materialForBook = new ArrayList<>();
-            
-        while ( doc!= null  /*&& link_counter != 0*/ ){
-            
-            Elements selected_url_tags = doc.select(selector_navigation_next);
-            String new_url = "";
-            for (Element current_tag : selected_url_tags){
-                 new_url = current_tag.attr("href");
-                 System.out.println(new_url);
-            }
-            
-            Elements selected_title_tags = doc.select(selector_title);
-              
-            String title = "";
-            for (Element current_tag : selected_title_tags){
-                title += current_tag.text();
-            }
-
-            String content_text = "";
-            Elements selected_tags = doc.select(selector_content);
-            for (Element current_tag : selected_tags){
-                content_text += "    " + current_tag.text() + "\n";
-            }
-            
-            materialForBook.add(new PreText(title, content_text, font_standart));
-            // addParagraph(document, title , content_text, standart_font, courcive_font, bold_font);
-            
-            if( new_url != "" ){ 
-                doc = null;
-                while(doc == null){
-                    try{
-                        //doc = Jsoup.parse(new URL(new_url).openStream(), "UTF-8", new_url);
-                        doc = Jsoup.connect(new_url).timeout(0).get(); 
-                    }catch(Exception ex){
-                        // try connect again and again until success    
-                    }
-                }
-                //counter--;
-            }else break;
-            //link_counter--;
-        }
+    
+    public void createBook(PDDocument document, ArrayList <PreText> materialForBook) throws IOException{
         
         document.addPage( createTitlePage(document, book_author, book_title) );
-        
-        
         prepare(materialForBook, document);
         
         // print table of contents 
@@ -202,8 +124,6 @@ public class BookMaker {
             for(PDPage a : b.pages){
                 document.addPage(a);
             }
-        document.save(new File(book_file));
-        document.close();
     }
     
     public void prepare(ArrayList <PreText> materialForBook, PDDocument doc) throws IOException{
@@ -327,21 +247,16 @@ public class BookMaker {
         int decor_text_font_size = 9;
         contentStream.setLineWidth(0.5f);
         contentStream.drawLine(margin / 2, mediabox.getHeight() - margin * 0.8f, mediabox.getWidth() - margin / 2, mediabox.getHeight() - margin * 0.8f);
-        
-        contentStream.beginText();
-        contentStream.setFont(font_italic, decor_text_font_size);
-        contentStream.newLineAtOffset(mediabox.getWidth() - margin - font_italic.getStringWidth(title) / 1000 * decor_text_font_size, mediabox.getHeight() - margin * 0.8f + 5);
-        contentStream.showText(title);
-        contentStream.endText();
+
+        printText(new String[]{ title }, font_italic, decor_text_font_size, 
+                mediabox.getWidth() - margin - font_italic.getStringWidth(title) / 1000 * decor_text_font_size, 
+                mediabox.getHeight() - margin * 0.8f + 5, 0, contentStream);
         
         /* print title if it is necessary */
         
         if (is_Head_Start) {
-            contentStream.beginText();
-            contentStream.setFont(font_bold, 20);
-            contentStream.newLineAtOffset(mediabox.getLowerLeftX() + margin, mediabox.getUpperRightY() - margin * 1.4f );
-            contentStream.showText(title);
-            contentStream.endText(); 
+            printText(new String[]{ title }, font_bold, 20, 
+                mediabox.getLowerLeftX() + margin, mediabox.getUpperRightY() - margin * 1.4f , 0, contentStream);
         }
         /* print content text */
 
@@ -353,153 +268,17 @@ public class BookMaker {
         }
         
         /* print page number */
-        contentStream.beginText();
-        contentStream.setFont(font_standart, fontSize);
-        contentStream.newLineAtOffset(mediabox.getWidth() / 2, margin * 0.5f );
-        contentStream.showText(String.valueOf(number));
-        contentStream.endText();
+        printText(new String[]{ String.valueOf(number) }, font_standart, fontSize, 
+                mediabox.getWidth() / 2, margin * 0.5f, 0, contentStream);
         
         contentStream.close();
         
-        for (PreText alpha: lines)
-        {
+        for (PreText alpha: lines){
             addHiperLink(doc, page, offset_y, alpha.title , alpha.page_for_table_of_content, alpha.pages.get(0));
             offset_y -= leading;
         }
         
         return page;
-    }
-    
-    public int calculatePages(int rows_count, int number_of_rows_on_page){
-        float current_value = (float)( rows_count + 2 ) / number_of_rows_on_page; /* +2 for title which takes 2 rows*/
-        int pages_to_chapter = Math.round(current_value) ;
-        if (pages_to_chapter > current_value) return pages_to_chapter;
-        else return pages_to_chapter + 1;
-    }
-    
-    public static void main(String[] args) throws IOException {
-        new BookMaker();
-    }
-   
-/**
- * Add new page with content to document 
- * only print calculated before text
- *
- * @param doc  target document
- * @param lines  text content
- * @param fontSize  font size for text content
- * @param margin  margin from right / left / top / bottom
- * @param title  name of the paragraph - to use it with decor and for titling
- * @param number  page number
- * @param is_Head_Start  show if paragraph start with this page - so if we need to print it or not
- */
-    public PDPage addPage(PDDocument doc, List<String> lines, float fontSize, float margin, String title, int number, 
-            boolean is_Head_Start) throws IOException{
-        
-        PDPage page = new PDPage();
-        //doc.addPage(page);
-        PDPageContentStream contentStream = new PDPageContentStream(doc, page);
-
-        float leading = 1.5f * fontSize;
-        
-        PDRectangle mediabox = page.getMediaBox();
-        
-        /* draw decor top line with paragraph title */
-        int decor_text_font_size = 9;
-        contentStream.setLineWidth(0.5f);
-        contentStream.drawLine(margin / 2, mediabox.getHeight() - margin * 0.8f, mediabox.getWidth() - margin / 2, mediabox.getHeight() - margin * 0.8f);
-        
-        contentStream.beginText();
-        contentStream.setFont(font_italic, decor_text_font_size);
-        contentStream.newLineAtOffset(mediabox.getWidth() - margin - getStringWidth(font_italic, title) / 1000 * decor_text_font_size, mediabox.getHeight() - margin * 0.8f + 5);
-        try{
-            contentStream.showText(title);
-        }catch(java.lang.IllegalArgumentException ex){
-            contentStream.showText(excludeUnsupportedSymbols(font_italic, title)); 
-        }
-        contentStream.endText();
-        
-        /* print title if it is necessary */
-        
-        if (is_Head_Start) {
-            contentStream.beginText();
-            contentStream.setFont(font_bold, 20);
-            contentStream.newLineAtOffset(mediabox.getLowerLeftX() + margin, mediabox.getUpperRightY() - margin * 1.4f );
-            try{
-                contentStream.showText(title);
-            }catch(java.lang.IllegalArgumentException ex){
-                contentStream.showText(excludeUnsupportedSymbols(font_bold, title)); 
-            }
-            contentStream.endText(); 
-        }
-        /* print content text */
-        
-        contentStream.beginText();
-        contentStream.setFont(font_standart, fontSize);
-        
-        if (!is_Head_Start) {        
-            contentStream.newLineAtOffset(mediabox.getLowerLeftX() + margin, mediabox.getUpperRightY() - margin * 1.4f );
-        }else {
-            contentStream.newLineAtOffset(mediabox.getLowerLeftX() + margin, mediabox.getUpperRightY() - margin * 1.4f - leading*2 );
-        }
-        for (String line: lines)
-        {
-            try{
-                contentStream.showText(line);
-            }catch(java.lang.IllegalArgumentException ex){
-                contentStream.showText(excludeUnsupportedSymbols(font_standart, line)); 
-            }
-            if (line.trim().isEmpty()) 
-                contentStream.newLineAtOffset(0, -leading/2);
-            else    
-                contentStream.newLineAtOffset(0, -leading);
-        }
-        contentStream.endText(); 
-        
-        /* print page number */
-        contentStream.beginText();
-        contentStream.setFont(font_standart, fontSize);
-        contentStream.newLineAtOffset(mediabox.getWidth() / 2, margin * 0.5f );
-        contentStream.showText(String.valueOf(number));
-        contentStream.endText();
-        
-        contentStream.close();
-        
-        return page;
-    }
-    
-    /**
-     * If there were an exception about symbol w/o glyph - exclude this symbol
-     * @param font - target font 
-     * @param text - text with problem symbol
-     * @return new text w/o corrupted symbol
-     * @throws IOException 
-     */
-    public String excludeUnsupportedSymbols(PDFont font, String text) throws IOException{
-        String new_text = "";
-        char[] a = text.toCharArray();
-
-        for (char b : a) {
-            try{
-                font.encode(String.valueOf(b));
-                new_text += String.valueOf(b);
-            } catch(java.lang.IllegalArgumentException e){
-                // just pass
-            }
-        }
-        
-        //System.out.println(text);
-        //System.out.println(new_text);
-        
-        return new_text;
-    }
-    
-    public float getStringWidth(PDFont font, String text) throws IOException{
-        try{
-            return font.getStringWidth(text);
-        } catch (java.lang.IllegalArgumentException ex){
-            return font.getStringWidth(excludeUnsupportedSymbols(font, text));
-        }
     }
     
     public List<String> calculateLines(PDFont font, String input) throws IOException{
@@ -548,7 +327,123 @@ public class BookMaker {
         }
         return lines;
     }
+
     
+    public int calculatePages(int rows_count, int number_of_rows_on_page){
+        float current_value = (float)( rows_count + 2 ) / number_of_rows_on_page; /* +2 for title which takes 2 rows*/
+        int pages_to_chapter = Math.round(current_value) ;
+        if (pages_to_chapter > current_value) return pages_to_chapter;
+        else return pages_to_chapter + 1;
+    }
+   
+/**
+ * Add new page with content to document 
+ * only print calculated before text
+ *
+ * @param doc  target document
+ * @param lines  text content
+ * @param fontSize  font size for text content
+ * @param margin  margin from right / left / top / bottom
+ * @param title  name of the paragraph - to use it with decor and for titling
+ * @param number  page number
+ * @param is_Head_Start  show if paragraph start with this page - so if we need to print it or not
+ */
+    public PDPage addPage(PDDocument doc, List<String> lines, float fontSize, float margin, String title, int number, 
+            boolean is_Head_Start) throws IOException{
+        
+        PDPage page = new PDPage();
+        //doc.addPage(page);
+        PDPageContentStream contentStream = new PDPageContentStream(doc, page);
+
+        float leading = 1.5f * fontSize;
+        
+        PDRectangle mediabox = page.getMediaBox();
+        
+        /* draw decor top line with paragraph title */
+        int decor_text_font_size = 9;
+        contentStream.setLineWidth(0.5f);
+        contentStream.drawLine(margin / 2, mediabox.getHeight() - margin * 0.8f, mediabox.getWidth() - margin / 2, mediabox.getHeight() - margin * 0.8f);
+        
+        printText(new String[]{ title }, font_italic, decor_text_font_size, 
+                mediabox.getWidth() - margin - getStringWidth(font_italic, title) / 1000 * decor_text_font_size, 
+                mediabox.getHeight() - margin * 0.8f + 5, 0, contentStream);
+        
+        /* print title if it is necessary */
+        
+        if (is_Head_Start) {
+            printText(new String[]{ title }, font_bold, 20, 
+                mediabox.getLowerLeftX() + margin, mediabox.getUpperRightY() - margin * 1.4f ,
+                0, contentStream);
+        }
+        
+        /* print content text */
+        
+        contentStream.beginText();
+        contentStream.setFont(font_standart, fontSize);
+        
+        if (!is_Head_Start) {        
+            contentStream.newLineAtOffset(mediabox.getLowerLeftX() + margin, mediabox.getUpperRightY() - margin * 1.4f );
+        }else {
+            contentStream.newLineAtOffset(mediabox.getLowerLeftX() + margin, mediabox.getUpperRightY() - margin * 1.4f - leading*2 );
+        }
+        for (String line: lines)
+        {
+            try{
+                contentStream.showText(line);
+            }catch(java.lang.IllegalArgumentException ex){
+                contentStream.showText(excludeUnsupportedSymbols(font_standart, line)); 
+            }
+            if (line.trim().isEmpty()) 
+                contentStream.newLineAtOffset(0, -leading/2);
+            else    
+                contentStream.newLineAtOffset(0, -leading);
+        }
+        contentStream.endText(); 
+        
+        /* print page number */
+        printText(new String[]{ String.valueOf(number) }, font_standart, fontSize, 
+                mediabox.getWidth() / 2, margin * 0.5f, 0, contentStream);
+       
+        contentStream.close();
+        return page;
+    }
+    
+    /**
+     * If there were an exception about symbol w/o glyph - exclude this symbol
+     * @param font - target font 
+     * @param text - text with problem symbol
+     * @return new text w/o corrupted symbol
+     * @throws IOException 
+     */
+    public static String excludeUnsupportedSymbols(PDFont font, String text) throws IOException{
+        String new_text = "";
+        char[] a = text.toCharArray();
+
+        for (char b : a) {
+            try{
+                font.encode(String.valueOf(b));
+                new_text += String.valueOf(b);
+            } catch(java.lang.IllegalArgumentException e){
+                // just pass
+            }
+        }
+        return new_text;
+    }
+    
+    public static float getStringWidth(PDFont font, String text) throws IOException{
+        try{
+            return font.getStringWidth(text);
+        } catch (java.lang.IllegalArgumentException ex){
+            return font.getStringWidth(excludeUnsupportedSymbols(font, text));
+        }
+    }
+    
+    public void setBook_author(String book_author) {
+        this.book_author = book_author;
+    }
+
+    public void setBook_title(String book_title) {
+        this.book_title = book_title;
+    }
+
 }
-
-
