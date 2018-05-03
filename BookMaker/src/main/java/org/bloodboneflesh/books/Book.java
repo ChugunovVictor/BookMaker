@@ -1,6 +1,5 @@
 package org.bloodboneflesh.books;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +15,6 @@ import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationLink;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDBorderStyleDictionary;
 import org.apache.pdfbox.pdmodel.interactive.documentnavigation.destination.PDPageXYZDestination;
 import org.bloodboneflesh.PreText;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 public abstract class Book {
     String book_author;
@@ -34,6 +29,11 @@ public abstract class Book {
     public static PDFont font_standart = PDType1Font.TIMES_ROMAN;    //PDType0Font.load(document, new File("times.ttf")); 
     public static PDFont font_italic   = PDType1Font.TIMES_ITALIC;   //PDType0Font.load(document, new File("timesi.ttf")); 
     public static PDFont font_bold     = PDType1Font.TIMES_BOLD;     //PDType0Font.load(document, new File("timesbd.ttf"));
+    
+    public PDPage createTitlePage(){ return null; }
+    public List<PDPage> createContent(){  return null;  }
+    public List<PDPage> createTableOfContents(){  return null;  }
+       
     
     public void printText(String[] texts, PDFont font, float fontSize, float offset_x, 
             float offset_y, float offset_dy, PDPageContentStream contentStream) throws IOException{

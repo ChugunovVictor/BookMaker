@@ -32,6 +32,8 @@
     </util:map>
     
     <bean id="bookmaker" class="org.bloodboneflesh.BookMaker">
+        <property name="debug" value="${debug}"/>
+        
         <property name="draft" value="#{book_type_select[${type}]}"/>
         <property name="book_file" value="#{'${book_author}'+' - '+'${book_title}'+'.pdf'}"/>
         <property name="address_to_start" value="${address_to_start}"/>
