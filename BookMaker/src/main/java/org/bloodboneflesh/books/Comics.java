@@ -1,52 +1,69 @@
 package org.bloodboneflesh.books;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import org.apache.pdfbox.pdmodel.PDDocument;
+import java.util.List;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.graphics.image.JPEGFactory;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.bloodboneflesh.PreText;
 
 public class Comics extends Book{
-    public void printParagraph( PreText current, PDDocument doc, boolean isTOC, ArrayList<PreText> material) throws IOException {
-        int page_counter = current.page_for_table_of_content;
+    
+    @Override
+    public List<PDPage> createContent(ArrayList <PreText> materialForBook) {
+        ArrayList<PDPage> result_content = new ArrayList<>();
         
-        if(isTOC){
-            for (int i=0; i< material.size();  )
-            {
-                if ( i == 0 ) // add string with paragraph title 
-                {
-                    /* -2 because title has x2 font */
-                    int finalDestination = i + number_of_rows_on_page - 1;
-                    if ( finalDestination > material.size() ) finalDestination = material.size();
-
-                    current.pages.add( printTOCPage(doc, material.subList(i, finalDestination ), fontSize, margin , current.title, page_counter, true));
-                    
-                    page_counter++;
-
-                    i+= number_of_rows_on_page - 1;
-                }else{
-                    int finalDestination = i + number_of_rows_on_page;
-                    if ( finalDestination > material.size() ) finalDestination = material.size();
-
-                    current.pages.add(printTOCPage(doc, material.subList(i, finalDestination ), fontSize, margin , current.title, page_counter, false));
-                    
-                    page_counter++;
-
-                    i+= number_of_rows_on_page;
+        // Split all images in a groups of < number_of_images_on_page >
+        List< PDImageXObject[] > listOfArraysOfImagesForEveryPage = new ArrayList<>();
+        PDImageXObject[] current = new PDImageXObject[number_of_images_on_page];
+        int counterInArray = 0; int counterPerPage = number_of_images_on_page;
+        for(PreText pt : materialForBook){
+            for( int i=0; i<pt.contextImages.size(); i++ ){
+                if( counterPerPage == 0 ){
+                    listOfArraysOfImagesForEveryPage.add(current);
+                    current = new PDImageXObject[number_of_images_on_page];
+                    counterInArray = 0; 
+                    counterPerPage = number_of_images_on_page;
                 }
-            }
-        }else{
-            for (int i=0; i< current.contextImages.size();  )
-            {
-                PDPage page = new PDPage();
-                try (PDPageContentStream contentStream = new PDPageContentStream(doc, page)) {
-                    contentStream.drawImage(current.contextImages.get(i), 70, 250);
-                }catch(Error ex){}
-                current.pages.add(page);
+                current[counterInArray] = pt.contextImages.get(i);
+                counterInArray++; counterPerPage--;
             }
         }
+        listOfArraysOfImagesForEveryPage.add(current);
+        
+        // Calculate once position of images on the page
+        PDPage etalonPage = pf.createPDPage();
+        PDImageXObject etalonImage = listOfArraysOfImagesForEveryPage.get(0)[0];
+        if(etalonImage == null) return result_content;
+        
+        int padding = 15;
+        
+        float w_scale = etalonImage.getWidth() / ( etalonPage.getMediaBox().getWidth() - padding * 2 );
+        float h_scale = etalonImage.getHeight() / ( etalonPage.getMediaBox().getHeight() / number_of_images_on_page - padding * ( 2 + number_of_images_on_page - 1 ));
+        float scale = w_scale /*> h_scale ? w_scale : h_scale*/;
+        float w_size = etalonImage.getWidth() / scale;
+        float h_size = etalonImage.getHeight() / scale;
+        
+        float space = (etalonPage.getMediaBox().getHeight() - h_size * number_of_images_on_page) / number_of_images_on_page;
+        float vertical_padding = etalonPage.getMediaBox().getHeight() - space * 0.7f - h_size;
+        float interval = space * 0.6f;
+                
+        // Now place groups of images on the pages
+        for(PDImageXObject[] arrayOfImages : listOfArraysOfImagesForEveryPage){
+            PDPage page = pf.createPDPage();
+            try (PDPageContentStream contentStream = new PDPageContentStream(doc, page)){
+                float offset_y = vertical_padding;
+                for(int i=0; i <arrayOfImages.length; i++){
+                    //contentStream.drawImage(arrayOfImages[i], 70, 250);
+                    contentStream.drawXObject(arrayOfImages[i], padding, offset_y, 
+                            w_size, h_size);
+                    offset_y -= h_size + interval;
+                }
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+            result_content.add(page);
+        }
+        return result_content;
     }
 }

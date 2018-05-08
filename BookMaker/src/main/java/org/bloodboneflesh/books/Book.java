@@ -15,13 +15,21 @@ import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationLink;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDBorderStyleDictionary;
 import org.apache.pdfbox.pdmodel.interactive.documentnavigation.destination.PDPageXYZDestination;
 import org.bloodboneflesh.PreText;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 public abstract class Book {
-    String book_author;
-    String book_title;
     
-    int number_of_rows_on_page = 38;
-    int number_of_images_on_page = 3;
+    public interface PDPageFactory{
+        public PDPage createPDPage();
+    }
+    
+    @Value("${book_author}") String book_author;
+    @Value("${book_title}")  String book_title;
+    @Value("${book_site}")  String book_site;
+    
+    public int number_of_rows_on_page = 38;
+    public int number_of_images_on_page = 3;
     float fontSize = 12;
     float margin = 50;
     float width = 620 - 2*margin;
@@ -30,10 +38,43 @@ public abstract class Book {
     public static PDFont font_italic   = PDType1Font.TIMES_ITALIC;   //PDType0Font.load(document, new File("timesi.ttf")); 
     public static PDFont font_bold     = PDType1Font.TIMES_BOLD;     //PDType0Font.load(document, new File("timesbd.ttf"));
     
-    public PDPage createTitlePage(){ return null; }
-    public List<PDPage> createContent(){  return null;  }
+    @Autowired PDDocument doc;
+    @Autowired Book.PDPageFactory pf;
+    
+    public PDPage createTitlePage(){ 
+        PDPage page = pf.createPDPage();
+        try (PDPageContentStream contentStream = new PDPageContentStream(doc, page)
+        // how to spring ified it?
+        ) {
+            PDRectangle mediabox = page.getMediaBox();
+            
+            /* print author */
+            float authorWidth = font_standart.getStringWidth(book_author) / 1000 * fontSize;
+            printText(new String[]{ book_author }, font_standart, fontSize, mediabox.getUpperRightX() - margin - authorWidth,
+                    mediabox.getUpperRightY() - margin, 0, contentStream);
+            
+            /* print title */
+            float titleWidth = font_bold.getStringWidth(book_title) / 1000 * fontSize * 5;
+            printText(new String[]{ book_title }, font_bold, fontSize * 5, 
+                    (mediabox.getWidth() - titleWidth)/2 , mediabox.getHeight()/2, 0, contentStream);
+            
+            /* print notes */
+            printText(new String[]{ 
+                "Made with https://jsoup.org/", 
+                "Made with https://pdfbox.apache.org/",
+                "Using materials from " + book_site
+            }, font_italic, fontSize, 
+                    margin + mediabox.getLowerLeftX() , 26 + margin + mediabox.getLowerLeftY(), -13, contentStream);
+
+        } catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return page;
+    }
+    
+    abstract public List<PDPage> createContent(ArrayList <PreText> materialForBook);
+    
     public List<PDPage> createTableOfContents(){  return null;  }
-       
     
     public void printText(String[] texts, PDFont font, float fontSize, float offset_x, 
             float offset_y, float offset_dy, PDPageContentStream contentStream) throws IOException{
@@ -46,10 +87,22 @@ public abstract class Book {
             }catch(java.lang.IllegalArgumentException ex){
                 contentStream.showText(excludeUnsupportedSymbols(font, text)); 
             }
-            offset_y += offset_dy;
+            offset_x = 0;
+            offset_y = offset_dy;
         }
         contentStream.endText();
     }
+
+
+
+
+
+
+
+
+
+
+
     
     public void addHiperLink(PDDocument target_document, PDPage target_page, float offset_y, String link_text, int page_number, PDPage link_to) throws IOException{
         List<PDAnnotation> annotations = target_page.getAnnotations();
@@ -109,7 +162,7 @@ public abstract class Book {
     
     public void createBook(PDDocument document, ArrayList <PreText> materialForBook) throws IOException{
         
-        document.addPage( createTitlePage(document, book_author, book_title) );
+        //document.addPage( createTitlePage(document, book_author, book_title) );
         prepare(materialForBook, document);
         
         // print table of contents 
@@ -126,6 +179,7 @@ public abstract class Book {
             }
     }
     
+    /*page numeration*/
     public void prepare(ArrayList <PreText> materialForBook, PDDocument doc) throws IOException{
         int page_counter = 1;
         int pages_to_toc = calculatePages(materialForBook.size(), number_of_rows_on_page);
@@ -193,44 +247,6 @@ public abstract class Book {
                 }
             }
         }
-    }
-    
-    public PDPage createTitlePage(PDDocument doc, String author, String title) throws IOException{
-        PDPage page = new PDPage();
-        PDPageContentStream contentStream = new PDPageContentStream(doc, page);
-
-        PDRectangle mediabox = page.getMediaBox();
-        
-        /* print author */
-        contentStream.beginText();
-        contentStream.setFont(font_standart, fontSize);
-        float authorWidth = font_standart.getStringWidth(author) / 1000 * fontSize;
-        contentStream.newLineAtOffset(mediabox.getUpperRightX() - margin - authorWidth, 
-                mediabox.getUpperRightY() - margin );
-        contentStream.showText(author);
-        contentStream.endText();
-        
-        /* print title */
-        contentStream.beginText();
-        contentStream.setFont(font_bold, fontSize * 5);
-        float titleWidth = font_bold.getStringWidth(title) / 1000 * fontSize * 5;
-        contentStream.newLineAtOffset( (mediabox.getWidth() - titleWidth)/2 , mediabox.getHeight()/2);
-        contentStream.showText(title);
-        contentStream.endText();
-        
-        /* print notes */
-        contentStream.beginText();
-        contentStream.setFont(font_italic, fontSize);
-        contentStream.newLineAtOffset(margin + mediabox.getLowerLeftX() , 26 + margin + mediabox.getLowerLeftY());
-        contentStream.showText("Made with https://jsoup.org/");
-        contentStream.newLineAtOffset(0, -13);
-        contentStream.showText("Made with https://pdfbox.apache.org/");
-        contentStream.newLineAtOffset(0, -13);
-        contentStream.showText("Using materials from https://parahumans.wordpress.com/");
-        contentStream.endText();
-        
-        contentStream.close();
-        return page;
     }
     
     public PDPage printTOCPage(PDDocument doc, List<PreText> lines, float fontSize, float margin, String title, int number, 

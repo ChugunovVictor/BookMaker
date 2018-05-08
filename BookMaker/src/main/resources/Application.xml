@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:lang="http://www.springframework.org/schema/lang"
-       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:lang="http://www.springframework.org/schema/lang"       xmlns:util="http://www.springframework.org/schema/util"
 
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
@@ -11,13 +9,11 @@
           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd
 ">
 
+    <import resource="PDFBox.xml"/>
+    <context:annotation-config/>
     <context:property-placeholder location="classpath:/bookmaker.properties"/>
-    <!--context:annotation-config/-->
     
-    <bean id="book" class="org.bloodboneflesh.books.Book" abstract="true">
-        <property name="book_author" value="${book_author}"/>
-        <property name="book_title" value="${book_title}"/>
-    </bean>
+    <bean id="book" class="org.bloodboneflesh.books.Book" abstract="true"/>
     
     <util:map id="book_type_select">
         <entry key="comics">
@@ -31,15 +27,13 @@
         </entry>
     </util:map>
     
-    <bean id="bookmaker" class="org.bloodboneflesh.BookMaker">
-        <property name="debug" value="${debug}"/>
-        
-        <property name="draft" value="#{book_type_select[${type}]}"/>
-        <property name="book_file" value="#{'${book_author}'+' - '+'${book_title}'+'.pdf'}"/>
-        <property name="address_to_start" value="${address_to_start}"/>
-        <property name="selector_content" value="${selector_content}"/>
-        <property name="selector_title" value="${selector_title}"/>
-        <property name="selector_navigation_next" value="${selector_navigation_next}"/>
-    </bean>
+    <bean id="bookmaker" class="org.bloodboneflesh.BookMaker"/>
     
+    <bean class="org.bloodboneflesh.PreText" scope="prototype" />
+
+    <bean class="org.springframework.beans.factory.config.ServiceLocatorFactoryBean">
+        <property name="serviceLocatorInterface" value="org.bloodboneflesh.PreText.PreTextFactory" />
+        <!--property name="serviceMappings"> <props> <prop key="client">PreText</prop> </props> </property--> 
+    </bean>
+   
 </beans>
