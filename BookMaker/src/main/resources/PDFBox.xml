@@ -13,10 +13,8 @@
 
     <bean class="org.apache.pdfbox.pdmodel.PDDocument"/>
     
-    <bean id="pd_content_stream" class="org.apache.pdfbox.contentstream.PDContentStream"
-         lazy-init="true"
-         scope = "prototype"
-    />
+    <bean id="pd_content_stream" class="org.apache.pdfbox.pdmodel.PDPageContentStream"
+        lazy-init="true" scope = "prototype"/>
     
     <bean class="org.apache.pdfbox.pdmodel.PDPage" scope = "prototype" />
     

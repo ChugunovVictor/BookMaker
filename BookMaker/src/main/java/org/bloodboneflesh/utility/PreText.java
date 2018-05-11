@@ -1,4 +1,4 @@
-package org.bloodboneflesh;
+package org.bloodboneflesh.utility;
 
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
@@ -15,18 +15,18 @@ import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.springframework.beans.factory.annotation.Autowired;
     /* Want to put table of contents before all paragraphes. 
        to calculate it, need to save info in someplace before print */
-public class PreText{
+public class PreText extends Text{
     
         public interface PreTextFactory{
             public PreText createPreText();
         }
     
-        public PreText(){}
+        public PreText(){
+            this.context = new ArrayList<>();
+        }
     
-        public String title;
         public int page_for_table_of_content;
         
-        public List<String> context = new ArrayList<>();
         public List<PDImageXObject> contextImages = new ArrayList<>();
         
         @Autowired private PDDocument pd_document;
@@ -69,11 +69,6 @@ public class PreText{
         
         public List<String> lines;
         public List<PDPage> pages = new ArrayList<PDPage>();
-        
-        
-        
-        
-        
         
         public PreText(String title, String context, List <PDImageXObject> contextImages, List<String> lines) throws IOException {
             this.title = title;

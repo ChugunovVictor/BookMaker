@@ -1,5 +1,6 @@
 package org.bloodboneflesh;
 
+import org.bloodboneflesh.utility.PreText;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -73,25 +74,17 @@ public class BookMaker {
     }
 
     PDPage title_page;
-    List<PDPage> table_of_contents;
     List<PDPage> content;
         
     private void createBookContent(){
         this.title_page = draft.createTitlePage();
         this.content = draft.createContent(materialForBook);
-        this.table_of_contents = draft.createTableOfContents();
     }
     
     private void composeBookParts(){
         document.addPage(title_page);
-        /*
-        for (PDPage page : table_of_contents){
-            setPageNumber(page);
-            document.addPage(page);
-        }
-        */
+     
         for (PDPage page : content){
-            setPageNumber(page);
             document.addPage(page);
         }
     }
@@ -113,7 +106,4 @@ public class BookMaker {
             ex.printStackTrace();
         }
     }
-    
-    private void setPageNumber(PDPage page){}
-    
 }

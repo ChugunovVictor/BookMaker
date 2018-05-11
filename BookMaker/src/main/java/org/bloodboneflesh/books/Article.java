@@ -3,9 +3,9 @@ package org.bloodboneflesh.books;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.pdfbox.pdmodel.PDPage;
-import org.bloodboneflesh.PreText;
+import org.bloodboneflesh.utility.PreText;
 
-public class Article extends Book{
+public class Article extends Novel{
 
     @Override
     public List<PDPage> createContent(ArrayList <PreText> materialForBook) {

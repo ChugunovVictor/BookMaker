@@ -29,11 +29,15 @@
     
     <bean id="bookmaker" class="org.bloodboneflesh.BookMaker"/>
     
-    <bean class="org.bloodboneflesh.PreText" scope="prototype" />
+    <bean class="org.bloodboneflesh.utility.PreText" scope="prototype" />
 
     <bean class="org.springframework.beans.factory.config.ServiceLocatorFactoryBean">
-        <property name="serviceLocatorInterface" value="org.bloodboneflesh.PreText.PreTextFactory" />
+        <property name="serviceLocatorInterface" value="org.bloodboneflesh.utility.PreText.PreTextFactory" />
         <!--property name="serviceMappings"> <props> <prop key="client">PreText</prop> </props> </property--> 
     </bean>
+     
+    <bean class="org.Main"/>
+           
+    <bean id="contextFactory" class="org.Main.ContextFactory" lazy-init="true"/>
    
 </beans>
