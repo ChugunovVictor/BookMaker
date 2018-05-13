@@ -1,4 +1,0 @@
-# ignore build path
-target/
-# ignore ide config folder
-nbproject/

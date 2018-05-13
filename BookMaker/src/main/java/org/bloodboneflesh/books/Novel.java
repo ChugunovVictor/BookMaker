@@ -2,6 +2,7 @@ package org.bloodboneflesh.books;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -16,6 +17,7 @@ import org.apache.pdfbox.pdmodel.interactive.annotation.PDBorderStyleDictionary;
 import org.apache.pdfbox.pdmodel.interactive.documentnavigation.destination.PDPageXYZDestination;
 import org.bloodboneflesh.utility.PreText;
 import static org.bloodboneflesh.books.Book.getStringWidth;
+import org.bloodboneflesh.utility.ArabicToRoman;
 import org.bloodboneflesh.utility.PostText;
 import org.bloodboneflesh.utility.Text;
 
@@ -24,13 +26,23 @@ public class Novel extends Book{
     List<PostText> paragraph;
     List<PostText> toc;
     
-    private List<PDPage> createTableOfContents(){  
-        List<PDPage> result = new ArrayList<>();
-        toc = prepare(paragraph);
-        for(PostText a: toc)
-            a.context = null;
-        
-        return result;
+    List<PDPage> content_pages;
+    
+    private List<PDPage> createTableOfContents(){ 
+        ArrayList<String> strings = new ArrayList<>();
+        for(PostText pt : paragraph){
+            float max_width = etalonPage.getMediaBox().getWidth() - margin * 3;
+            float still_free = max_width - getStringWidth(font_standart, String.valueOf(pt.title + pt.page_number)) / 1000 * fontSize;
+            float point_width = getStringWidth(font_standart, ".")  / 1000 * fontSize;
+
+            String points = "";
+            for (int i =0 ; i < still_free / point_width; i++){
+                points += ".";
+            }
+            strings.add(pt.title + points + pt.page_number);
+        }
+        toc = prepare( Arrays.asList(new PostText[]{new PostText(1, "Table of Contents", strings)}));
+        return createPages(true);
     }
     
     private List<PDPage> createPages(boolean is_toc){
@@ -74,7 +86,8 @@ public class Novel extends Book{
         
             PDRectangle mediabox = page.getMediaBox();
                     
-            printDecor(contentStream, mediabox, title, page_number);
+            printDecor(contentStream, mediabox, title, 
+                    is_toc ? ArabicToRoman.convert(page_number - 1) : String.valueOf(page_number));
         
             /* print title if it is necessary */
             if (is_Head_Start) {
@@ -89,7 +102,7 @@ public class Novel extends Book{
                 printLink(strings.toArray(new String[]{}), font_standart, fontSize, 
                     mediabox.getLowerLeftX() + margin, 
                     mediabox.getUpperRightY() - margin * 1.4f - (is_Head_Start ?  leading*2 : 0),
-                    -leading, contentStream);
+                    -leading, contentStream, page, content_pages);
             else    
                 printText(strings.toArray(new String[]{}), font_standart, fontSize, 
                     mediabox.getLowerLeftX() + margin, 
@@ -105,13 +118,14 @@ public class Novel extends Book{
     public List<PDPage> createContent(ArrayList <PreText> materialForBook) {
         List<PDPage> result = new ArrayList<>();
         paragraph = prepare(materialForBook);
+        content_pages = createPages(false);
         result.addAll(createTableOfContents());
-        result.addAll(createPages(false));
+        result.addAll(content_pages);
         return result;
     }
     
     public void printDecor(PDPageContentStream contentStream, PDRectangle mediabox, 
-            String title, int page_number) throws IOException{
+            String title, String page_number) throws IOException{
         /* draw decor top line with paragraph title */
         int decor_text_font_size = 9;
         contentStream.setLineWidth(0.5f);
@@ -128,11 +142,9 @@ public class Novel extends Book{
     }
     
     public List<PostText> prepare(List <? extends Text> materialForBook){
-        int page_counter = 1;
-        int pages_to_toc = calculatePages(materialForBook.size(), number_of_rows_on_page);
+        int page_counter = 2;
+        //int pages_to_toc = calculatePages(materialForBook.size(), number_of_rows_on_page);
         List<PostText> prepare_paragraph = new ArrayList<>();
-        
-        page_counter += pages_to_toc;
         
         for(Text p : materialForBook){
             List<String> strings = new ArrayList<>();

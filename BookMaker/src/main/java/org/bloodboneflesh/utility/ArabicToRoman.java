@@ -1,4 +1,4 @@
-package org.bloodboneflesh;
+package org.bloodboneflesh.utility;
 import java.util.*;
 /*
     https://en.wikipedia.org/wiki/Roman_numerals
@@ -73,10 +73,5 @@ public class ArabicToRoman {
         for (Object o : hm.keySet())
             if (hm.get(o).equals(value)) return o;
         return null;
-    }
-
-    public static void main(String args[]) {
-        System.out.println(convert(991));
-        System.out.println(convertVisaVersa("CMXCI"));
     }
 }

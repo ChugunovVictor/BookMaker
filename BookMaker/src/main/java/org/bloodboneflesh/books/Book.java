@@ -42,6 +42,7 @@ public abstract class Book {
     @Autowired PDDocument doc;
     @Autowired Book.PDPageFactory pf;
     @Autowired Main.ContextFactory cf;
+    @Autowired PDPage etalonPage;
     
     public PDPage createTitlePage(){ 
         PDPage page = pf.createPDPage();
@@ -76,75 +77,50 @@ public abstract class Book {
     
     abstract public List<PDPage> createContent(ArrayList <PreText> materialForBook);
     
-    
-    public void addHiperLink(PDPageContentStream contents, PDPage target_page, float offset_y, String link_text, int page_number, PDPage link_to) throws IOException{
-        List<PDAnnotation> annotations = target_page.getAnnotations();
-        
-        // First add some text, two lines we'll add some annotations to this later
-        PDFont font = PDType1Font.TIMES_ROMAN;
-            
-        printText(new String[]{ link_text }, font, fontSize, margin, offset_y, 0, contents);
-        printText(new String[]{ String.valueOf(page_number) }, font, fontSize, 
-            target_page.getMediaBox().getWidth() - margin - getStringWidth(font, 
-            String.valueOf(page_number)) / 1000 * fontSize, offset_y, 0, contents);
-                
-        float max_width = target_page.getMediaBox().getWidth() - margin * 2;
-        float still_free = max_width - getStringWidth(font, String.valueOf(page_number)) / 1000 * fontSize - getStringWidth(font, link_text) / 1000 * fontSize;
-        float point_width = getStringWidth(font, ".")  / 1000 * fontSize;
-        
-        String points = "";
-        for (int i =0 ; i < still_free / point_width; i++){
-            points += ".";
-        }
-        
-        printText(new String[]{ points }, font, fontSize, margin + getStringWidth(font, link_text) / 1000 * fontSize, offset_y, 0, contents);
-                
-        // Now add the link annotation, so the click on "Jump to page three" works
-        PDAnnotationLink pageLink = new PDAnnotationLink();
-
-        // Set the rectangle containing the link
-        float textWidth = getStringWidth(font, link_text) / 1000 * fontSize;
-        PDRectangle position = new PDRectangle();
-        position.setLowerLeftX(margin);
-        position.setLowerLeftY(offset_y);  // down a couple of points
-        position.setUpperRightX(target_page.getMediaBox().getWidth() - margin);
-        position.setUpperRightY(offset_y + 10);
-        pageLink.setRectangle(position);
-        // add the GoTo action
-        PDActionGoTo actionGoto = new PDActionGoTo();
-        // see javadoc for other types of PDPageDestination
-        //PDPageDestination dest = new PDPageFitWidthDestination();
-        PDPageXYZDestination dest = new PDPageXYZDestination();
-        // do not use setPageNumber(), this is for external destinations only
-        dest.setPage(link_to);
-        dest.setLeft(0);
-        dest.setTop((int)link_to.getMediaBox().getHeight());
-        
-        actionGoto.setDestination(dest);
-        pageLink.setAction(actionGoto);
-        
-        PDBorderStyleDictionary border = new PDBorderStyleDictionary();
-        border.setWidth( 0f );
-        pageLink.setBorderStyle( border );
-
-        annotations.add(pageLink);      
-    }
-    
     public void printLink(String[] texts, PDFont font, float fontSize, float offset_x, 
-            float offset_y, float offset_dy, PDPageContentStream contentStream) throws IOException{
+            float offset_y, float offset_dy, PDPageContentStream contentStream, PDPage target_page, 
+            List<PDPage> link_to) throws IOException{
         contentStream.beginText();
         contentStream.setFont(font, fontSize);
+        List<PDAnnotation> annotations = target_page.getAnnotations();
+        float offset_link_y = offset_y;
         for( String text : texts ){
+            int page_number = Integer.parseInt(text.substring(text.length() - 6)
+                    .replaceAll("\\.", "")) - 2 /* minus title */;
+            
             contentStream.newLineAtOffset(offset_x, offset_y);
+            
             try{
-                //addHiperLink(page, offset_y, title , page_number, alpha.pages.get(0));
-                
                 contentStream.showText(text);
             }catch(java.lang.IllegalArgumentException ex){
                 contentStream.showText(excludeUnsupportedSymbols(font, text)); 
             }
+            
+            PDAnnotationLink pageLink = new PDAnnotationLink();
+
+            PDRectangle position = new PDRectangle(
+                margin, offset_link_y, target_page.getMediaBox().getWidth() - margin* 2, 10
+            );
+            pageLink.setRectangle(position);
+            
+            PDActionGoTo actionGoto = new PDActionGoTo();
+            PDPageXYZDestination dest = new PDPageXYZDestination();
+            dest.setPage(link_to.get(page_number));
+            dest.setLeft(0);
+            dest.setTop((int)link_to.get(page_number).getMediaBox().getHeight());
+
+            actionGoto.setDestination(dest);
+            pageLink.setAction(actionGoto);
+/*
+            PDBorderStyleDictionary border = new PDBorderStyleDictionary();
+            border.setWidth( 0f );
+            pageLink.setBorderStyle( border );
+*/
+            annotations.add(pageLink);
+            
             offset_x = 0;
             offset_y = text.trim().isEmpty() ? offset_dy / 2 : offset_dy;
+            offset_link_y += text.trim().isEmpty() ? offset_dy / 2 : offset_dy;
         }
         contentStream.endText();
         

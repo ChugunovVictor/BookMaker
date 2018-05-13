@@ -32,7 +32,7 @@ public class Comics extends Book{
         listOfArraysOfImagesForEveryPage.add(current);
         
         // Calculate once position of images on the page
-        PDPage etalonPage = pf.createPDPage();
+        //PDPage etalonPage = pf.createPDPage();
         PDImageXObject etalonImage = listOfArraysOfImagesForEveryPage.get(0)[0];
         if(etalonImage == null) return result_content;
         
