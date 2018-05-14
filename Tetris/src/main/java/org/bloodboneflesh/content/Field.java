@@ -9,6 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class Field {
     int size_x, size_y, size_z;
     Point[][][] field;
+
+    public Point[][][] getField() {
+        return field;
+    }
     //@Autowired 
     Scanner scanner;
     
