@@ -1,0 +1,26 @@
+<input type="button" class="btn btn-primary" value="Add Hotel"
+       routerLink="/hotels/create"
+/>
+
+<table class="table">
+  <tr *ngFor="let hotel of hotelService.hotels">
+    <td>{{hotel.id}}</td>
+    <td>{{hotel.name}}</td>
+    <td>{{hotel.stars}}</td>
+    <td><input type="button" class="btn btn-success" value="Edit"
+          (click)="popup(hotel)"
+    ></td>
+    <td><input type="button" class="btn btn-danger" value="Delete"></td>
+  </tr>
+</table>
+
+<hotel-edit id="hotel-popup" class="modal" tabindex="-1"
+   [hotel]="currentHotel"
+   role="dialog"></hotel-edit>
+
+
+
+
+
+
+
