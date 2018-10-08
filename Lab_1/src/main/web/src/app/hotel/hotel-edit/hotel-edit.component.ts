@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Hotel } from '../hotel.model'
-import { Rating } from '../rating.rating.component'
 
 @Component({
   selector: 'hotel-edit',
@@ -9,9 +8,7 @@ import { Rating } from '../rating.rating.component'
 })
 export class HotelEditComponent implements OnInit {
 
-  @ViewChild('name') name: ElementRef;
-  @ViewChild('stars') stars: ElementRef;
-  @ViewChild('stars_c') stars_c: Rating;
+  @Input() hotel: Hotel;
 
   constructor() {
   }
