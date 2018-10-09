@@ -1,25 +1,50 @@
-<input type="button" class="btn btn-primary" value="Add Hotel"
+
+<input *ngIf="is(userService.currentUser) && userService.currentUser.type == Type.ADMIN"
+       type="button" class="btn btn-primary" value="Add Hotel"
        routerLink="/hotels/create"
 />
 
+
+<!-- pager -->
+<ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+  <li [ngClass]="{disabled:pager.currentPage === 1}" class="page-item">
+    <a class="page-link" (click)="setPage(1)">First</a>
+  </li>
+  <li [ngClass]="{disabled:pager.currentPage === 1}" class="page-item">
+    <a class="page-link" (click)="setPage(pager.currentPage - 1)">Previous</a>
+  </li>
+  <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}" class="page-item">
+    <a class="page-link" (click)="setPage(page)">{{page}}</a>
+  </li>
+  <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}" class="page-item">
+    <a class="page-link" (click)="setPage(pager.currentPage + 1)">Next</a>
+  </li>
+  <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}" class="page-item">
+    <a class="page-link" (click)="setPage(pager.totalPages)">Last</a>
+  </li>
+</ul>
+
+
 <table class="table">
-  <tr *ngFor="let hotel of hotelService.hotels">
+  <tr *ngFor="let hotel of pagedItems">
     <td>{{hotel.id}}</td>
     <td>{{hotel.name}}</td>
     <td>{{hotel.stars}}</td>
-    <td><input type="button" class="btn btn-success" value="Edit"
+    <td><input
+      *ngIf="is(userService.currentUser) && userService.currentUser.type == Type.ADMIN"
+      type="button" class="btn btn-success" value="Edit"
           (click)="popup(hotel)"
     ></td>
-    <td><input type="button" class="btn btn-danger" value="Delete"></td>
+    <td><input
+      *ngIf="is(userService.currentUser) && userService.currentUser.type == Type.ADMIN"
+      type="button" class="btn btn-danger" value="Delete"></td>
   </tr>
 </table>
 
+
 <hotel-edit id="hotel-popup" class="modal" tabindex="-1"
-   [hotel]="currentHotel"
-   role="dialog"></hotel-edit>
-
-
-
+            [hotel]="currentHotel"
+            role="dialog"></hotel-edit>
 
 
 

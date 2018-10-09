@@ -5,10 +5,12 @@ import { HotelEditComponent } from "./hotel/hotel-edit/hotel-edit.component"
 import { HotelListComponent } from "./hotel/hotel-list/hotel-list.component"
 import { HotelCreateComponent } from "./hotel/hotel-create/hotel-create.component";
 
+import { AuthComponent } from "./user/auth/auth.component";
+
 const routes: Routes = [
   { path: "", component: HotelListComponent },
-  { path: "hotels/create", component: HotelCreateComponent }/*,
-  { path: "hotels/:id", component: HotelEditComponent }
+  { path: "hotels/create", component: HotelCreateComponent },
+  { path: "login", component: AuthComponent }/*
   { path: "hotels/create", component: HotelCreateComponent }*/
 ];
 

@@ -10,7 +10,13 @@ export class HotelService {
 
   constructor( private http: HttpClient, public restService:RestService,
     private route: ActivatedRoute, private router: Router) {
+        for (var i=0; i < 45; i++)
+          this.hotels.push(new Hotel(i, 'mock_name_'+i, i%15));
+
+
         restService.getHotels().subscribe((data:any[]) => {
+
+
             data.forEach( (data:any[]) => {
                 this.hotels.push(new Hotel(data['id'], data['name'], data['stars']));
             })

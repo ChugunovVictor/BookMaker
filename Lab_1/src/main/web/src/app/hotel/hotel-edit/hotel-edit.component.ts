@@ -8,6 +8,7 @@ import { Hotel } from '../hotel.model'
 })
 export class HotelEditComponent implements OnInit {
 
+  @Input() action: string;
   @Input() hotel: Hotel;
 
   constructor() {

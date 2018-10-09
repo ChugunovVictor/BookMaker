@@ -1,0 +1,32 @@
+<div class="form-group">
+  <select class="form-control custom-select">
+    <option *ngFor="let user of userService.users" value="user">
+       <user-browse [user]="user"></user-browse>
+    </option>
+  </select >
+</div>
+
+
+<div class="dropdown">
+  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+    Dropdown button
+  </button>
+  <div class="dropdown-menu">
+    <a class="dropdown-item"  *ngFor="let user of userService.users" value="user">
+      <user-browse [user]="user"></user-browse>
+    </a>
+  </div>
+</div>
+
+<div class="form-group">
+  <label>Login:</label>
+  <input class="form-control" type="text" value=""/>
+</div>
+<div class="form-group">
+  <label>Password:</label>
+  <input class="form-control" type="password" value=""/>
+</div>
+<div class="form-group">
+  <input class="form-control btn-success" type="button" value="Login"
+  (click)="login()"/>
+</div>
