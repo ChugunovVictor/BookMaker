@@ -15,6 +15,7 @@ declare var $: any;
 })
 export class HotelListComponent implements OnInit {
 
+  userType = Type;
   currentHotel : Hotel;
   pager: any = {};
   pagedItems: any[];

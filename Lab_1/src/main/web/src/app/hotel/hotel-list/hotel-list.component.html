@@ -1,5 +1,5 @@
 
-<input *ngIf="is(userService.currentUser) && userService.currentUser.type == Type.ADMIN"
+<input *ngIf="is(userService.currentUser) && userService.currentUser.type == userType.ADMIN"
        type="button" class="btn btn-primary" value="Add Hotel"
        routerLink="/hotels/create"
 />
@@ -31,12 +31,12 @@
     <td>{{hotel.name}}</td>
     <td>{{hotel.stars}}</td>
     <td><input
-      *ngIf="is(userService.currentUser) && userService.currentUser.type == Type.ADMIN"
+      *ngIf="is(userService.currentUser) && userService.currentUser.type == userType.ADMIN"
       type="button" class="btn btn-success" value="Edit"
           (click)="popup(hotel)"
     ></td>
     <td><input
-      *ngIf="is(userService.currentUser) && userService.currentUser.type == Type.ADMIN"
+      *ngIf="is(userService.currentUser) && userService.currentUser.type == userType.ADMIN"
       type="button" class="btn btn-danger" value="Delete"></td>
   </tr>
 </table>

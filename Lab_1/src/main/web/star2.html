@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<style>
+			.t_d{ width: 300px; }
+			.t_l{ width: 20px; float: right; font-size: 200%; visibility:hidden; color: gray; }
+			.t_l:before{ content: "★"; visibility:visible; }
+			.t_l:hover{ color: orange !important; }
+			.t_l:hover ~ .t_l { color: orange  !important; }
+			
+			.t_l:checked ~ .t_l { color: yellow; }
+			.t_l:checked { color: yellow; }
+		</style>
+	</head>
+	<body>
+		<div class="t_d">
+			<input type="radio" name="group_1" class="t_l" value="1"/>
+			<input type="radio" name="group_1" class="t_l" value="2"/>
+			<input type="radio" name="group_1" class="t_l" value="3"/>
+			<input type="radio" name="group_1" class="t_l" value="4"/>
+			<input type="radio" name="group_1" class="t_l" value="5"/>
+		</div>
+	</body>
+</html>
+
+https://embed.plnkr.co/nqKUSPWb6w5QXr8a0wEu/?show=preview
+https://almerosteyn.com/2016/04/linkup-custom-control-to-ngcontrol-ngmodel

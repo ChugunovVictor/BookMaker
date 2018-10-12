@@ -10,7 +10,7 @@ export class RestService {
 
   constructor(private http: HttpClient) { }
 
-  endpoint: string = 'http://localhost:8080/';
+  endpoint: string = 'http://localhost:9090/';
   httpOptions: object = {
       headers: new HttpHeaders({
           'Content-Type':  'application/json'
