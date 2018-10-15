@@ -1,19 +1,25 @@
 package org.ssau.service;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.ssau.model.Hotel;
 import org.ssau.repository.HotelRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping({"/hotels"})
 public class HotelService {
+    Log logger = LogFactory.getLog(HotelService.class);
+    private static final int PAGE_SIZE = 3;
 
     @Autowired
     private HotelRepository hotels;
@@ -47,11 +53,18 @@ public class HotelService {
     @DeleteMapping(path ={"/{id}"})
     public ResponseEntity<String>  delete(@PathVariable("id") long id) {
         hotels.deleteById(id);
-        return new ResponseEntity<>("Hotel has been deleted!", HttpStatus.OK);
+        return new ResponseEntity<>("{\"message\":\"hotel deleted\"}", HttpStatus.OK);
+    }
+
+    @GetMapping(path ={"/page/{id}"})
+    public Page<Hotel> getHotels(@PathVariable("id") int pageNumber){
+        PageRequest request =
+                new PageRequest(pageNumber - 1, PAGE_SIZE, Sort.Direction.DESC, "id");
+        return hotels.findAll(request);
     }
 
     @GetMapping
-    public java.lang.Iterable findAll(){
+    public Iterable<Hotel> findAll(){
         return hotels.findAll();
     }
 }

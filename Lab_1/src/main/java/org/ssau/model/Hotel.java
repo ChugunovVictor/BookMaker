@@ -48,4 +48,9 @@ public class Hotel implements Identifiable<Long> {
     public void setStars(int stars) {
         this.stars = stars;
     }
+
+    @Override
+    public String toString(){
+        return "Hotel [" + this.name + ":" + this.stars + "]";
+    }
 }

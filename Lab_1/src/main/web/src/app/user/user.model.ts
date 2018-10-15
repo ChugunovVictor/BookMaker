@@ -4,15 +4,13 @@ export enum Type{
 }
 
 export class User {
-
-
   icon: any;
   id: number;
   login: string;
   password: string;
   type : Type;
 
-  constructor(id: number, login: string, password: string, type: Type, icon: any){
+  constructor(id: number, login: string, password: string, type: Type, icon?: any){
     this.id = id;
     this.login = login;
     this.password = password;

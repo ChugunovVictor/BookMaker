@@ -4,6 +4,11 @@ import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 const noop = () => {
 };
 
+/*
+https://embed.plnkr.co/nqKUSPWb6w5QXr8a0wEu/?show=preview
+https://almerosteyn.com/2016/04/linkup-custom-control-to-ngcontrol-ngmodel
+*/
+
 export const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => RatingComponent),
@@ -52,8 +57,6 @@ export class RatingComponent implements ControlValueAccessor  {
         if (value !== this.innerValue) {
           this.innerValue = value;
 
-
-
           switch(value){
             case 1 { this.v1.nativeElement.checked = true; break; }
             case 2 { this.v2.nativeElement.checked = true; break; }
@@ -79,5 +82,4 @@ export class RatingComponent implements ControlValueAccessor  {
           this.innerValue = v;
           this.onChangeCallback(v);
       }
-
 }

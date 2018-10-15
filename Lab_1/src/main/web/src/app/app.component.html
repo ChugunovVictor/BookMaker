@@ -4,9 +4,14 @@
       {{userService.currentUser.login}}
     </span>
     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-      <a class="dropdown-item" (click)="logout()">Logout</a>
+      <a class="dropdown-item" (click)="logout($event); false">Logout</a>
     </div>
   </span>
+
+  <input *ngIf="is(userService.currentUser) && userService.currentUser.type == userType.ADMIN"
+         type="button" class="btn btn-primary nav-item" value="Add Hotel"
+         routerLink="/hotels/create"
+  />
 </nav>
 
 <!--The content below is only a placeholder and can be replaced.-->

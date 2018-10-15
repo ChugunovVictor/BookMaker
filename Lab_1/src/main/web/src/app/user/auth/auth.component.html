@@ -1,32 +1,22 @@
+
 <div class="form-group">
-  <select class="form-control custom-select">
-    <option *ngFor="let user of userService.users" value="user">
-       <user-browse [user]="user"></user-browse>
-    </option>
-  </select >
-</div>
-
-
-<div class="dropdown">
-  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-    Dropdown button
-  </button>
-  <div class="dropdown-menu">
-    <a class="dropdown-item"  *ngFor="let user of userService.users" value="user">
-      <user-browse [user]="user"></user-browse>
-    </a>
+  <label>Sign in or Sign up:</label>
+  <div class="form-inline">
+    <select #selectUser class="custom-select col-sm-3">
+      <option *ngFor="let user of userService.users">
+        {{user.login}}
+        <!--user-browse [user]="user"></user-browse-->
+      </option>
+    </select >
+    <span class=" col-sm-1 ">&nbsp;/&nbsp;</span>
+    <input #enterUser class="form-control col-sm-8 " type="text" placeholder="Enter login" />
   </div>
-</div>
-
-<div class="form-group">
-  <label>Login:</label>
-  <input class="form-control" type="text" value=""/>
 </div>
 <div class="form-group">
   <label>Password:</label>
-  <input class="form-control" type="password" value=""/>
+  <input #enterPassword class="form-control" type="password" placeholder="Enter password"/>
 </div>
 <div class="form-group">
-  <input class="form-control btn-success" type="button" value="Login"
-  (click)="login()"/>
+  <input  class="form-control btn-success" type="button"
+  (click)="login()" value="Login"/>
 </div>

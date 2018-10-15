@@ -1,5 +1,8 @@
-import { Component, OnInit,ViewChild, ElementRef} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { RatingComponent } from '../rating/rating.component'
+import { Hotel } from '../hotel.model';
+import { RestService } from '../../rest.service';
+import { Router} from '@angular/router';
 
 @Component({
   selector: 'hotel-create',
@@ -7,13 +10,18 @@ import { RatingComponent } from '../rating/rating.component'
   styleUrls: ['./hotel-create.component.css']
 })
 export class HotelCreateComponent implements OnInit {
-  @ViewChild('name') name: ElementRef;
-  @ViewChild('stars') stars: ElementRef;
-  @ViewChild('stars_c') stars_c: RatingComponent;
+  h: Hotel = new Hotel();
 
-  constructor() { }
+  constructor( private rest : RestService ,  private router: Router) { }
+
+
 
   ngOnInit() {
+  }
+
+  createHotel(){
+      console.log( this.rest.createHotel(this.h) );
+      this.router.navigate(['/']);
   }
 
 }

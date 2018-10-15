@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Hotel } from './hotel.model'
 import { RestService } from '../rest.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 
 @Injectable()
 export class HotelService {
@@ -10,16 +10,28 @@ export class HotelService {
 
   constructor( private http: HttpClient, public restService:RestService,
     private route: ActivatedRoute, private router: Router) {
-        for (var i=0; i < 45; i++)
-          this.hotels.push(new Hotel(i, 'mock_name_'+i, i%15));
+      restService.getHotels().subscribe((data:any[]) => {
+          data.forEach( (data:any[]) => {
+              this.hotels.push(new Hotel(data['id'], data['name'], data['stars']));
+          })
+      });
 
+      router.routeReuseStrategy.shouldReuseRoute = function(){
+          return false;
+      };
 
-        restService.getHotels().subscribe((data:any[]) => {
+      router.events.subscribe((evt) => {
+          if (evt instanceof NavigationEnd) {
+              this.router.navigated = false;
+              window.scrollTo(0, 0);
+          }
+      });
+  }
 
-
-            data.forEach( (data:any[]) => {
-                this.hotels.push(new Hotel(data['id'], data['name'], data['stars']));
-            })
-        });
+  deleteHotel(hotel: Hotel){
+    var resp = this.restService.deleteHotel(hotel.id);
+    console.log(resp);
+    /* dont know how to refresh it clearly */
+    this.router.navigate(['']);
   }
 }

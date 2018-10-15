@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterContentInit } from '@angular/core';
 import { HotelService } from '../hotels.service';
 import { Hotel } from '../hotel.model';
 import { UserService } from '../../user/user.service';
-import { PagerService } from './pager.service';
 import { Type } from '../../user/user.model';
+import { RestService } from '../../rest.service';
 
 declare var $: any;
 
@@ -13,31 +13,49 @@ declare var $: any;
   styleUrls: ['./hotel-list.component.css'],
   providers: [ HotelService ]
 })
-export class HotelListComponent implements OnInit {
+export class HotelListComponent implements  OnInit {
 
   userType = Type;
   currentHotel : Hotel;
   pager: any = {};
   pagedItems: any[];
 
+  totalItems: number;
+  currentPage: number = 1;
+  pageSize: number;
+  totalPages: number;
+  pages: any[];
+  items: any[];
+
   constructor( private hotelService : HotelService,
                private userService: UserService,
-               private pagerService: PagerService) {
+               private rest: RestService) {
+      this.setPage(this.currentPage);
   }
 
-  ngOnInit() {
-    this.setPage(1);
-  }
-
-  popup( action:string, hotel: Hotel ){
+  popup( hotel: Hotel ){
     this.currentHotel = hotel;
     $('#hotel-popup').modal();
   }
 
+  deleteHotel( hotel: Hotel ){
+      this.hotelService.deleteHotel(hotel);
+  }
 
-  setPage(page: number) {
-      this.pager = this.pagerService.getPager(this.hotelService.hotels.length, page);
-      this.pagedItems = this.hotelService.hotels.slice(this.pager.startIndex, this.pager.endIndex + 1);
+  setPage(pageNumber: number) {
+     this.rest.getHotelsByPage(pageNumber)
+        .subscribe(data => {
+
+
+           //console.log(data);
+               this.totalItems= data['totalElements'];
+               this.currentPage= pageNumber;
+               this.pageSize= data['size'];
+               this.totalPages= data['totalPages'];
+               this.pages= [1,2,3,4,5];
+               this.items= data['content'];
+           }
+        );
   }
 
   is(a:any){
@@ -46,7 +64,7 @@ export class HotelListComponent implements OnInit {
     return true;
   }
 
-
+  ngOnInit(){}
 }
 
 

@@ -8,12 +8,14 @@
 			.t_l:before{ content: "★"; visibility:visible; }
 			.t_l:hover{ color: orange !important; }
 			.t_l:hover ~ .t_l { color: orange  !important; }
-			
+
 			.t_l:checked ~ .t_l { color: yellow; }
 			.t_l:checked { color: yellow; }
 		</style>
 	</head>
 	<body>
+    <input type="button" value="123">
+
 		<div class="t_d">
 			<input type="radio" name="group_1" class="t_l" value="1"/>
 			<input type="radio" name="group_1" class="t_l" value="2"/>
@@ -24,5 +26,8 @@
 	</body>
 </html>
 
+
+<!--
 https://embed.plnkr.co/nqKUSPWb6w5QXr8a0wEu/?show=preview
 https://almerosteyn.com/2016/04/linkup-custom-control-to-ngcontrol-ngmodel
+-->

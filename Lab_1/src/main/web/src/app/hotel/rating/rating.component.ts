@@ -1,45 +1,85 @@
-import { Component, OnInit } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
+import { Component, forwardRef, ElementRef, ViewChild, Input } from '@angular/core';
+import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 
-/* https://stackoverflow.com/questions/50618050/how-to-create-custom-input-component-with-ngmodel-working-in-angular-6 */
+const noop = () => {
+};
+
+/*
+https://embed.plnkr.co/nqKUSPWb6w5QXr8a0wEu/?show=preview
+https://almerosteyn.com/2016/04/linkup-custom-control-to-ngcontrol-ngmodel
+*/
+
+export const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => RatingComponent),
+    multi: true
+};
 
 @Component({
   selector: 'rating',
-  template: `<div class="row r_row">
-               <div class="rating">
-                 <input type="radio" id="value_5" name="rating" value="5" /><label for="value_5">5</label>
-                 <input type="radio" id="value_4" name="rating" value="4" /><label for="value_4">4</label>
-                 <input type="radio" id="value_3" name="rating" value="3" /><label for="value_3">3</label>
-                 <input type="radio" id="value_2" name="rating" value="2" /><label for="value_2">2</label>
-                 <input type="radio" id="value_1" name="rating" value="1" /><label for="value_1">1</label>
-               </div>
-             </div>`,
+  templateUrl: './rating.component.html',
   styleUrls: ['./rating.component.css'],
-  providers: [{
-          provide: NG_VALUE_ACCESSOR
-      }]
+    providers: [CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR]
 })
-export class RatingComponent implements OnInit {
+export class RatingComponent implements ControlValueAccessor  {
 
-  value: number = 0;
+      @Input() group : number;
+      @Input() disabled : boolean;
 
-  constructor() { }
+      @ViewChild ("v1") v1: ElementRef;
+      @ViewChild ("v2") v2: ElementRef;
+      @ViewChild ("v3") v3: ElementRef;
+      @ViewChild ("v4") v4: ElementRef;
+      @ViewChild ("v5") v5: ElementRef;
 
-  ngOnInit() {
-  }
+      //The internal data model
+      private innerValue: any = '';
 
-  onChange: (_: any) => void = (_: any) => {};
+      //Placeholders for the callbacks which are later provided
+      //by the Control Value Accessor
+      private onTouchedCallback: () => void = noop;
+      private onChangeCallback: (_: any) => void = noop;
 
-  updateChanges() {
-      this.onChange(this.value);
-  }
+      //get accessor
+      get value(): any {
+          return this.innerValue;
+      };
 
-  registerOnChange(fn: any): void {
-      this.onChange = fn;
-  }
+      //set accessor including call the onchange callback
+      set value(v: any) {
+          if (v !== this.innerValue) {
+              this.innerValue = v;
+              this.onChangeCallback(v);
+          }
+      }
 
-  setValue(n){
+      //From ControlValueAccessor interface
+      writeValue(value: any) {
+        if (value !== this.innerValue) {
+          this.innerValue = value;
 
-  }
+          switch(value){
+            case 1: { this.v1.nativeElement.checked = true; break; }
+            case 2: { this.v2.nativeElement.checked = true; break; }
+            case 3: { this.v3.nativeElement.checked = true; break; }
+            case 4: { this.v4.nativeElement.checked = true; break; }
+            case 5: { this.v5.nativeElement.checked = true; break; }
+          }
+        }
+      }
 
+      //From ControlValueAccessor interface
+      registerOnChange(fn: any) {
+          this.onChangeCallback = fn;
+      }
+
+      //From ControlValueAccessor interface
+      registerOnTouched(fn: any) {
+          this.onTouchedCallback = fn;
+      }
+
+      onChange($event, v) {
+          this.innerValue = v;
+          this.onChangeCallback(v);
+      }
 }

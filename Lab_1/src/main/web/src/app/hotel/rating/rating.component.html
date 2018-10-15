@@ -1,9 +1,7 @@
-<div class="row r_row">
-  <div class="rating">
-    <input type="radio" id="value_5" name="rating" value="5" /><label for="value_5">5</label>
-    <input type="radio" id="value_4" name="rating" value="4" /><label for="value_4">4</label>
-    <input type="radio" id="value_3" name="rating" value="3" /><label for="value_3">3</label>
-    <input type="radio" id="value_2" name="rating" value="2" /><label for="value_2">2</label>
-    <input type="radio" id="value_1" name="rating" value="1" /><label for="value_1">1</label>
-  </div>
+<div class="t_d">
+  <input [disabled]="disabled" #v5 (change)="onChange($event, 5)" type="radio" name="group_{{group}}" class="t_l" value="5"/>
+  <input [disabled]="disabled" #v4 (change)="onChange($event, 4)" type="radio" name="group_{{group}}" class="t_l" value="4"/>
+  <input [disabled]="disabled" #v3 (change)="onChange($event, 3)" type="radio" name="group_{{group}}" class="t_l" value="3"/>
+  <input [disabled]="disabled" #v2 (change)="onChange($event, 2)" type="radio" name="group_{{group}}" class="t_l" value="2"/>
+  <input [disabled]="disabled" #v1 (change)="onChange($event, 1)" type="radio" name="group_{{group}}" class="t_l" value="1"/>
 </div>

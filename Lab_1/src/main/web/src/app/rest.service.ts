@@ -2,6 +2,8 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
+import { Hotel } from './hotel/hotel.model';
+import { User } from './user/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -22,27 +24,55 @@ export class RestService {
     return body || { };
   };
 
-  /* Hotels management */
+  /* ===============Hotels management=============== */
   getHotels(): Observable<any> {
       return this.http.get(this.endpoint + 'hotels').pipe(
           map(this.extractData));
   };
+
+  getHotelsByPage(id) {
+        return this.http.get(this.endpoint + 'hotels/page/' + id);
+    };
 
   getHotel(id): Observable<any> {
       return this.http.get(this.endpoint + 'hotels/' + id).pipe(
           map(this.extractData));
   };
 
-  createHotel(hotel: Object): Observable<Object> {
-      return this.http.post(this.endpoint + 'hotels/', hotel);
+  createHotel(hotel: Hotel) {
+      return this.http.post<Hotel>(this.endpoint + 'hotels/', hotel, this.httpOptions).subscribe(
+         error =>{
+             console.log(error)
+         });
   }
 
-  updateHotel(id, hotel: Object): Observable<any> {
-      return this.http.put(this.endpoint + 'hotels/' + id, hotel);
+  updateHotel(id, hotel: Object) {
+      return this.http.put(this.endpoint + 'hotels/' + id, hotel, this.httpOptions).subscribe(
+         error =>{
+             console.log(error)
+         });
   };
 
-  deleteHotel(id): Observable<any> {
+  deleteHotel(id) {
       return this.http.delete(this.endpoint + 'hotels/' + id,
-          { responseType: 'text' });
+      this.httpOptions).subscribe();
   };
+
+  /* ===============Users management=============== */
+    getUsers(): Observable<any> {
+        return this.http.get(this.endpoint + 'users').pipe(
+            map(this.extractData));
+    };
+
+    getUser(login): Observable<any> {
+        return this.http.get(this.endpoint + 'users/' + login).pipe(
+            map(this.extractData));
+    };
+
+    createUser(user: User) {
+        return this.http.post<User>(this.endpoint + 'users/', user, this.httpOptions).subscribe(
+           error =>{
+               console.log(error)
+           });
+    }
 }

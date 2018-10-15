@@ -10,8 +10,8 @@ import { AuthComponent } from "./user/auth/auth.component";
 const routes: Routes = [
   { path: "", component: HotelListComponent },
   { path: "hotels/create", component: HotelCreateComponent },
-  { path: "login", component: AuthComponent }/*
-  { path: "hotels/create", component: HotelCreateComponent }*/
+  { path: "login", component: AuthComponent }
 ];
 
-export const cRoutingModule: ModuleWithProviders = RouterModule.forRoot(routes, {useHash: false});
+export const cRoutingModule: ModuleWithProviders =
+    RouterModule.forRoot(routes, {useHash: false, onSameUrlNavigation: 'reload'});

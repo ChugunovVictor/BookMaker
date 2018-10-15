@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Hotel } from '../hotel.model'
+import { RestService } from '../../rest.service';
 
 @Component({
   selector: 'hotel-edit',
@@ -8,17 +9,16 @@ import { Hotel } from '../hotel.model'
 })
 export class HotelEditComponent implements OnInit {
 
-  @Input() action: string;
   @Input() hotel: Hotel;
 
-  constructor() {
+  constructor(private rest : RestService ) {
   }
 
   ngOnInit() {
 
   }
 
-  createHotel(){
-
+  update(){
+     this.rest.updateHotel(this.hotel.id, this.hotel);
   }
 }
