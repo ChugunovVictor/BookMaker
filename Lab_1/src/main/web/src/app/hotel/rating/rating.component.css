@@ -1,8 +1,0 @@
-.t_d{ width: 100px; }
-.t_l{ width: 20px; float: right; font-size: 200%; visibility:hidden; color: gray; margin-top: - 10px; }
-.t_l:before{ content: "★"; visibility:visible; }
-.t_l:hover{ color: orange !important; }
-.t_l:hover ~ .t_l { color: orange  !important; }
-
-.t_l:checked ~ .t_l { color: #f4e842; /*yellow*/}
-.t_l:checked { color: #f4e842; /*yellow*/}
