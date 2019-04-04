@@ -23,7 +23,7 @@ public class Main {
             BookMaker bm = (BookMaker)ctx.getBean("bookmaker");
             bm.createBook();
         }else{
-            Print.prepareToPrint("1.PDF","out.pdf", true);
+            Print.prepareToPrint("1.PDF","out.pdf");
         }
     }
 }
