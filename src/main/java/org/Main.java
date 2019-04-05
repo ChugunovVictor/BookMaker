@@ -15,7 +15,7 @@ public class Main {
         }
     }
 
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws IOException {
         boolean prepare_to_print = true;
 
         if(!prepare_to_print){
@@ -24,6 +24,7 @@ public class Main {
             bm.createBook();
         }else{
             Print.prepareToPrint("1.PDF","out.pdf");
+            //Print.addPageNumbers("1.PDF","out.pdf");
         }
     }
 }

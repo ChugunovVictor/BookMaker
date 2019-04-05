@@ -137,9 +137,14 @@ public class Novel extends Book{
                 mediabox.getHeight() - margin * 0.8f + 5, 0, contentStream);
         
         /* print page number */
-        printText(new String[]{ String.valueOf(page_number) }, font_standart, fontSize, 
-                mediabox.getWidth() / 2, margin * 0.5f, 0, contentStream);
+        printPageNumber(contentStream, mediabox, page_number);
     }
+
+    public static void printPageNumber(PDPageContentStream contentStream, PDRectangle mediabox, String page_number) throws IOException{
+        printText(new String[]{ String.valueOf(page_number) }, font_standart, fontSize,
+                mediabox.getWidth() / 2, margin * 0.2f, 0, contentStream);
+    }
+
     
     public List<PostText> prepare(List <? extends Text> materialForBook){
         int page_counter = 2;

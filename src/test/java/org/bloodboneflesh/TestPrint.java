@@ -7,7 +7,7 @@ import static org.junit.Assert.assertArrayEquals;
 
 public class TestPrint {
     @Test
-    public void testConvert(){
+    public void testSort(){
         assertArrayEquals("1-4", new int[]{
                 4, 1, 2, 3
         }, Print.sort(1,4));
@@ -33,6 +33,20 @@ public class TestPrint {
                 -1, 1, 2, 7,
                 6, 3, 4, 5
         }, Print.sort(1,7));
+        assertArrayEquals("1-6", new int[]{
+                -1, 1, 2, -1,
+                6, 3, 4, 5
+        }, Print.sort(1,6));
+        assertArrayEquals("1-5", new int[]{
+                -1, 1, 2, -1,
+                -1, 3, 4, 5
+        }, Print.sort(1,5));
+        assertArrayEquals("1-13", new int[]{
+                -1, 1, 2, -1,
+                -1, 3, 4, 13,
+                12, 5, 6, 11,
+                10, 7, 8, 9
+        }, Print.sort(1,13));
 
         assertArrayEquals("1-20", new int[]{
                 20, 1, 2, 19,

@@ -31,8 +31,8 @@ public abstract class Book {
     
     public int number_of_rows_on_page = 38;
     public int number_of_images_on_page = 3;
-    float fontSize = 12;
-    float margin = 50;
+    static float fontSize = 12;
+    static float margin = 50;
     float width = 620 - 2*margin;
 
     public static PDFont font_standart = PDType1Font.TIMES_ROMAN;    //PDType0Font.load(document, new File("times.ttf")); 
@@ -126,7 +126,7 @@ public abstract class Book {
         
     }        
     
-    public void printText(String[] texts, PDFont font, float fontSize, float offset_x, 
+    public static void printText(String[] texts, PDFont font, float fontSize, float offset_x,
             float offset_y, float offset_dy, PDPageContentStream contentStream) throws IOException{
         contentStream.beginText();
         contentStream.setFont(font, fontSize);
