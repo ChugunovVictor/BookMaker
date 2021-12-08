@@ -1,4 +1,4 @@
-package org.bloodboneflesh.utility;
+package org.chugunov.utility;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -7,7 +7,7 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import java.io.File;
 import java.util.Arrays;
 
-import static org.bloodboneflesh.books.Novel.printPageNumber;
+import static org.chugunov.books.Novel.printPageNumber;
 
 public class Print {
 

@@ -1,4 +1,4 @@
-package org.bloodboneflesh.utility;
+package org.chugunov.utility;
 
 import java.util.List;
 

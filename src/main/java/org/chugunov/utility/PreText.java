@@ -1,4 +1,4 @@
-package org.bloodboneflesh.utility;
+package org.chugunov.utility;
 
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
@@ -12,7 +12,6 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.graphics.image.JPEGFactory;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
-import org.springframework.beans.factory.annotation.Autowired;
     /* Want to put table of contents before all paragraphes. 
        to calculate it, need to save info in someplace before print */
 public class PreText extends Text{
@@ -29,7 +28,7 @@ public class PreText extends Text{
         
         public List<PDImageXObject> contextImages = new ArrayList<>();
         
-        @Autowired private PDDocument pd_document;
+        private PDDocument pd_document;
 
         public void addImage(String source){
             PDImageXObject result = getImage(source);

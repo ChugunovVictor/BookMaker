@@ -1,11 +1,11 @@
-package org.bloodboneflesh.books;
+package org.chugunov.books;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
-import org.bloodboneflesh.utility.PreText;
+import org.chugunov.utility.PreText;
 
 public class Comics extends Book{
     
@@ -51,8 +51,7 @@ public class Comics extends Book{
         // Now place groups of images on the pages
         for(PDImageXObject[] arrayOfImages : listOfArraysOfImagesForEveryPage){
             PDPage page = pf.createPDPage();
-            try (PDPageContentStream contentStream = (PDPageContentStream)cf.getBeanWithParameters
-                    (PDPageContentStream.class, doc, page)) {
+            try (PDPageContentStream contentStream = new PDPageContentStream(doc, page)) {
                 float offset_y = vertical_padding;
                 for(int i=0; i <arrayOfImages.length; i++){
                     //contentStream.drawImage(arrayOfImages[i], 70, 250);

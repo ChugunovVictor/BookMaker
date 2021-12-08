@@ -1,6 +1,6 @@
-package org.bloodboneflesh;
+package org.chugunov;
 
-import org.bloodboneflesh.utility.PreText;
+import org.chugunov.utility.PreText;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,28 +8,26 @@ import java.util.List;
 import org.apache.pdfbox.contentstream.PDContentStream;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
-import org.bloodboneflesh.books.Book;
+import org.chugunov.books.Book;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 
 public class BookMaker {
-    @Value("#{book_type_select[${type}]}")  Book draft;
+    Book draft;
 
-    @Value("#{new Boolean('${debug}')}")    boolean debug;
-    @Value("${address_to_start}")           String address_to_start;
-    @Value("${selector_content}")           String selector_content;
-    @Value("${selector_title}")             String selector_title;
-    @Value("${selector_navigation_next}")   String selector_navigation_next;
+    boolean debug;
+    String address_to_start;
+    String selector_content;
+    String selector_title;
+    String selector_navigation_next;
     
-    @Autowired PDDocument document;
+    PDDocument document;
     PDContentStream contentStream;
     
     ArrayList <PreText> materialForBook = new ArrayList<>();
     
-    @Autowired PreText.PreTextFactory ptf;
+    PreText.PreTextFactory ptf;
     
     private void parseHTTP() throws IOException{
         Document doc = Jsoup.connect(address_to_start).timeout(0).get();
@@ -89,7 +87,7 @@ public class BookMaker {
         }
     }
     
-    @Value("#{'${book_author}'+' - '+'${book_title}'+'.pdf'}") String book_file;
+    String book_file;
     
     private void createFile() throws IOException{
         document.save(new File(book_file));

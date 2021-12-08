@@ -1,25 +1,17 @@
-package org.bloodboneflesh.books;
+package org.chugunov.books;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.apache.pdfbox.pdmodel.PDDocument;
+
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
-import org.apache.pdfbox.pdmodel.font.PDFont;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.pdfbox.pdmodel.interactive.action.PDActionGoTo;
-import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotation;
-import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationLink;
-import org.apache.pdfbox.pdmodel.interactive.annotation.PDBorderStyleDictionary;
-import org.apache.pdfbox.pdmodel.interactive.documentnavigation.destination.PDPageXYZDestination;
-import org.bloodboneflesh.utility.PreText;
-import static org.bloodboneflesh.books.Book.getStringWidth;
-import org.bloodboneflesh.utility.ArabicToRoman;
-import org.bloodboneflesh.utility.PostText;
-import org.bloodboneflesh.utility.Text;
+import org.chugunov.utility.PreText;
+import org.chugunov.utility.ArabicToRoman;
+import org.chugunov.utility.PostText;
+import org.chugunov.utility.Text;
 
 public class Novel extends Book{
 
@@ -81,8 +73,7 @@ public class Novel extends Book{
     private PDPage createPage(String title, int page_number, List<String> strings, 
             boolean is_Head_Start, boolean is_toc){
         PDPage page = pf.createPDPage();
-        try (PDPageContentStream contentStream = (PDPageContentStream)cf.getBeanWithParameters
-            (PDPageContentStream.class, doc, page)) {
+        try (PDPageContentStream contentStream = new PDPageContentStream(doc, page)) {
         
             PDRectangle mediabox = page.getMediaBox();
                     

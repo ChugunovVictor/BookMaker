@@ -1,6 +1,6 @@
-package org.bloodboneflesh;
+package org.chugunov;
 
-import org.bloodboneflesh.utility.Print;
+import org.chugunov.utility.Print;
 import org.junit.Test;
 
 import static org.junit.Assert.assertArrayEquals;

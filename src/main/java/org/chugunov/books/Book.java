@@ -1,4 +1,4 @@
-package org.bloodboneflesh.books;
+package org.chugunov.books;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,12 +12,8 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.interactive.action.PDActionGoTo;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotation;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationLink;
-import org.apache.pdfbox.pdmodel.interactive.annotation.PDBorderStyleDictionary;
 import org.apache.pdfbox.pdmodel.interactive.documentnavigation.destination.PDPageXYZDestination;
-import org.bloodboneflesh.utility.PreText;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.Main;
+import org.chugunov.utility.PreText;
 
 public abstract class Book {
     
@@ -25,9 +21,9 @@ public abstract class Book {
         public PDPage createPDPage();
     }
     
-    @Value("${book_author}") String book_author;
-    @Value("${book_title}")  String book_title;
-    @Value("${book_site}")  String book_site;
+    String book_author;
+    String book_title;
+    String book_site;
     
     public int number_of_rows_on_page = 38;
     public int number_of_images_on_page = 3;
@@ -39,15 +35,13 @@ public abstract class Book {
     public static PDFont font_italic   = PDType1Font.TIMES_ITALIC;   //PDType0Font.load(document, new File("timesi.ttf")); 
     public static PDFont font_bold     = PDType1Font.TIMES_BOLD;     //PDType0Font.load(document, new File("timesbd.ttf"));
     
-    @Autowired PDDocument doc;
-    @Autowired Book.PDPageFactory pf;
-    @Autowired Main.ContextFactory cf;
-    @Autowired PDPage etalonPage;
+    PDDocument doc;
+    Book.PDPageFactory pf;
+    PDPage etalonPage;
     
     public PDPage createTitlePage(){ 
         PDPage page = pf.createPDPage();
-        try (PDPageContentStream contentStream = (PDPageContentStream)cf.getBeanWithParameters
-            (PDPageContentStream.class, doc, page)) {
+        try (PDPageContentStream contentStream = new PDPageContentStream(doc, page)) {
             
             PDRectangle mediabox = page.getMediaBox();
             

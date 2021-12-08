@@ -1,9 +1,9 @@
-package org.bloodboneflesh.books;
+package org.chugunov.books;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.pdfbox.pdmodel.PDPage;
-import org.bloodboneflesh.utility.PreText;
+import org.chugunov.utility.PreText;
 
 public class Article extends Novel{
 
