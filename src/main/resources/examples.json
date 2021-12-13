@@ -1,0 +1,26 @@
+[
+  {
+    "site_": "https://parahumans.wordpress.com/",
+    "addressToStart_": "https://parahumans.wordpress.com/2011/06/11/1-1/",
+    "author_": "John McCrae",
+    "selectorContent_": "#content .entry-content p:not(p:contains(Next Chapter))",
+    "selectorTitle_": "#content .entry-title",
+    "selectorNavigationNext_": "#content .nav-next a[href]",
+    "numberOfBlocksOnPage_": 38,
+    "title_": "Worm",
+    "debug_": false,
+    "type_": "NOVEL"
+  },
+  {
+    "site_": "http://www.twogag.com/",
+    "addressToStart_": "http://www.twogag.com/archives/4/",
+    "author_": "Rickard Jonasson",
+    "selectorContent_": "#comic img",
+    "selectorTitle_": ".post-comic .post-title a[href]",
+    "selectorNavigationNext_": ".comic_navi .navi-next",
+    "numberOfBlocksOnPage_": 3,
+    "title_": "TwoGuysAndGuy",
+    "debug_": false,
+    "type_": "COMIC"
+  }
+]

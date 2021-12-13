@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+
+<?import javafx.scene.control.Button?>
+<VBox xmlns:fx="http://www.w3.org/2001/XInclude" fx:controller="org.chugunov.controllers.AboutTabController">
+    <Label fx:id="lblText" text="About"/>
+</VBox>

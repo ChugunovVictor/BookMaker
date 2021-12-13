@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<VBox xmlns:fx="http://www.w3.org/2001/XInclude"
+      fx:controller="org.chugunov.controllers.ProcessTabController"
+      stylesheets="@../css/processTabPage.css">
+    <padding>
+        <Insets top="5" right="5" bottom="5" left="5" />
+    </padding>
+    <VBox fillWidth="true" maxHeight="Infinity" spacing="5" alignment="CENTER_RIGHT">
+        <HBox fx:id="info" fillHeight="true" VBox.vgrow="SOMETIMES" prefHeight="300" spacing="5">
+            <TitledPane fx:id="basic" text="Basic" collapsible="false" HBox.hgrow="SOMETIMES" prefHeight="300" prefWidth="300">
+                <GridPane vgap="5">
+                    <children>
+                        <Label text="Type" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                        <ComboBox fx:id="typeField"  GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                        <Label text="URL" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                        <TextField fx:id="siteField"  GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                        <Label text="Author" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                        <TextField fx:id="authorField"  GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                        <Label text="Title" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                        <TextField fx:id="titleField"  GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+                        <Label text="Path" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                        <HBox GridPane.rowIndex="4" GridPane.columnIndex="1">
+                            <TextField fx:id="pathField" />
+                            <Button text="..." onAction="#chooseDirectory"></Button>
+                        </HBox>
+                    </children>
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0" percentWidth="25.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0" percentWidth="75.0" />
+                    </columnConstraints>
+                </GridPane>
+            </TitledPane>
+            <TitledPane fx:id="other" text="Other" collapsible="false" HBox.hgrow="SOMETIMES" prefHeight="300" prefWidth="300">
+                <GridPane vgap="5">
+                    <children>
+                        <Label text="Blocks On Page" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                        <Spinner fx:id="countField" min="1" max="100" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                        <Label text="Debug" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                        <CheckBox fx:id="debugField"  GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                    </children>
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0" percentWidth="25.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0" percentWidth="75.0" />
+                    </columnConstraints>
+                </GridPane>
+            </TitledPane>
+        </HBox>
+        <TitledPane fx:id="content" text="Content" collapsible="false" VBox.vgrow="ALWAYS"  prefHeight="300">
+            <GridPane vgap="5">
+                <children>
+                    <Label text="Start Page" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                    <TextField fx:id="startPageField"  GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                    <Label text="Selector Title" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                    <TextField fx:id="selectorTitleField"  GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                    <Label text="Selector Content" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                    <TextField fx:id="selectorContentField"  GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                    <Label text="Selector Next Page" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                    <TextField fx:id="selectorNextField"  GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+                    <Label text="Examples" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                    <TextField fx:id="examplesField"  GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+                    <Button fx:id="helpBtn" text="Help to Fill" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+                </children>
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0" percentWidth="20.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0" percentWidth="80.0" />
+                </columnConstraints>
+            </GridPane>
+        </TitledPane>
+        <Button fx:id="btn" text="Proceed"></Button>
+    </VBox>
+</VBox>

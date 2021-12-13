@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:id="main"
+            fx:controller="org.chugunov.controllers.MainController">
+    <TabPane xmlns="http://javafx.com/javafx/8.0.40"
+             xmlns:fx="http://www.w3.org/2001/XInclude"
+             fx:id="tabPane"
+             prefHeight="600" prefWidth="800">
+        <tabs>
+            <Tab fx:id="processTab" text="Process" closable="false">
+                <fx:include fx:id="processTabPage" source="processTabPage.fxml"/>
+            </Tab>
+            <Tab fx:id="utilityTab" text="Utility" closable="false">
+                <fx:include fx:id="utilityTabPage" source="utilityTabPage.fxml"/>
+            </Tab>
+            <Tab fx:id="aboutTab" text="About" closable="false">
+                <fx:include fx:id="aboutTabPage" source="aboutTabPage.fxml"/>
+            </Tab>
+        </tabs>
+    </TabPane>
+</AnchorPane>
+
