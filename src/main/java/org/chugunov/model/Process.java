@@ -70,20 +70,38 @@ public class Process {
   public void setNumberOfBlocksOnPage_(int value) { this.numberOfBlocksOnPage_.setValue(value); }
   public void setOutputPath_(String value) { this.outputPath_.setValue(value); }
 
+  public void copy(Process newValue){
+    this.setAuthor_(newValue.getAuthor());
+    this.setTitle_(newValue.getTitle());
+    this.setDebug_(newValue.isDebug());
+    this.setSelectorContent_(newValue.getSelectorContent());
+    this.setSelectorTitle_(newValue.getSelectorTitle());
+    this.setSelectorNavigationNext_(newValue.getSelectorNavigationNext());
+    this.setNumberOfBlocksOnPage_(newValue.getNumberOfBlocksOnPage());
+    this.setType_(newValue.getType());
+    this.setAddressToStart_(newValue.getAddressToStart());
+    this.setSite_(newValue.getSite());
+    this.setOutputPath_(newValue.getOutputPath());
+  }
+
   @Override
   public String toString() {
+    return title_.getValue() + " (" + site_.getValue() + ")";
+  }
+
+  public String toExtendedString() {
     return "Process{" +
-        "site_=" + site_ +
-        ", addressToStart_=" + addressToStart_ +
-        ", author_='" + author_ + '\'' +
-        ", title_='" + title_ + '\'' +
-        ", selectorContent_='" + selectorContent_ + '\'' +
-        ", selectorTitle_='" + selectorTitle_ + '\'' +
-        ", selectorNavigationNext_='" + selectorNavigationNext_ + '\'' +
-        ", type_=" + type_ +
-        ", debug_=" + debug_ +
-        ", numberOfBlocksOnPage_=" + numberOfBlocksOnPage_ +
-        ", outputPath_=" + outputPath_ +
+        "site_=" + site_.getValue() +
+        ", addressToStart_=" + addressToStart_.getValue() +
+        ", author_='" + author_.getValue() + '\'' +
+        ", title_='" + title_.getValue() + '\'' +
+        ", selectorContent_='" + selectorContent_.getValue() + '\'' +
+        ", selectorTitle_='" + selectorTitle_.getValue() + '\'' +
+        ", selectorNavigationNext_='" + selectorNavigationNext_.getValue() + '\'' +
+        ", type_=" + type_.getValue() +
+        ", debug_=" + debug_.getValue() +
+        ", numberOfBlocksOnPage_=" + numberOfBlocksOnPage_.getValue() +
+        ", outputPath_=" + outputPath_.getValue() +
         '}';
   }
 }

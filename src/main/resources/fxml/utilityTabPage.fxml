@@ -4,6 +4,6 @@
 <?import javafx.scene.control.Label?>
 
 <?import javafx.scene.control.Button?>
-<VBox xmlns:fx="http://www.w3.org/2001/XInclude" fx:controller="org.chugunov.controllers.UtilityTabController">
+<VBox xmlns:fx="http://www.w3.org/2001/XInclude" fx:controller="org.chugunov.ui.controllers.UtilityTabController">
     <Label fx:id="lblText" text="Utility"/>
 </VBox>

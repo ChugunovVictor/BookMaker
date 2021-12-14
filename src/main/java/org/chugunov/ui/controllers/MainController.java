@@ -1,9 +1,10 @@
-package org.chugunov.controllers;
+package org.chugunov.ui.controllers;
 
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import org.chugunov.ui.Controller;
 
 public class MainController {
 
