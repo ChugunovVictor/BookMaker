@@ -40,7 +40,7 @@
 
                         <Label text="Path" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
                         <HBox GridPane.rowIndex="4" GridPane.columnIndex="1">
-                            <TextField fx:id="pathField" />
+                            <TextField fx:id="outputPathField" />
                             <Button text="..." onAction="#chooseDirectory"></Button>
                         </HBox>
                     </children>
@@ -54,7 +54,7 @@
                 <GridPane vgap="5">
                     <children>
                         <Label text="Blocks On Page" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-                        <Spinner fx:id="countField" min="1" max="100" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                        <Spinner fx:id="numberOfBlocksOnPageField" min="1" max="100" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 
                         <Label text="Debug" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
                         <CheckBox fx:id="debugField"  GridPane.rowIndex="1" GridPane.columnIndex="1"/>
@@ -70,7 +70,7 @@
             <GridPane vgap="5">
                 <children>
                     <Label text="Start Page" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-                    <TextField fx:id="startPageField"  GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                    <TextField fx:id="addressToStartField"  GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 
                     <Label text="Selector Title" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
                     <TextField fx:id="selectorTitleField"  GridPane.rowIndex="1" GridPane.columnIndex="1"/>
@@ -79,7 +79,7 @@
                     <TextField fx:id="selectorContentField"  GridPane.rowIndex="2" GridPane.columnIndex="1"/>
 
                     <Label text="Selector Next Page" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-                    <TextField fx:id="selectorNextField"  GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                    <TextField fx:id="selectorNavigationNextField"  GridPane.rowIndex="3" GridPane.columnIndex="1"/>
 
                     <Label text="Examples" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
                     <TextField fx:id="examplesField"  GridPane.rowIndex="4" GridPane.columnIndex="1"/>
@@ -92,6 +92,6 @@
                 </columnConstraints>
             </GridPane>
         </TitledPane>
-        <Button fx:id="btn" text="Proceed"></Button>
+        <Button fx:id="btn" text="Proceed" onAction="#proceed"></Button>
     </VBox>
 </VBox>

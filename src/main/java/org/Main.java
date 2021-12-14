@@ -11,6 +11,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.application.Application;
 import org.chugunov.controllers.MainController;
+import org.chugunov.controllers.ProcessTabController;
 import org.chugunov.ui.panels.AboutPanel;
 import org.chugunov.ui.panels.ProcessPanel;
 import org.chugunov.ui.panels.UtilityPanel;
@@ -67,6 +68,9 @@ public class Main extends Application {
     scene.setRoot(loader.load());
     MainController controller = loader.getController();
     controller.init();
+
+    ProcessTabController ptc = (ProcessTabController)controller.getController("Process");
+    ptc.init();
 
     primaryStage.setTitle("Book Maker");
     primaryStage.setScene(scene);

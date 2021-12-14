@@ -1,4 +1,4 @@
 package org.chugunov.controllers;
 
-public class UtilityTabController {
+public class UtilityTabController implements Controller{
 }

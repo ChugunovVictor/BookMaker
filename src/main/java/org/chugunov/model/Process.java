@@ -1,8 +1,6 @@
 package org.chugunov.model;
 
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.*;
 
 import java.net.URL;
 import java.util.Optional;
@@ -17,8 +15,8 @@ public class Process {
   private SimpleStringProperty selectorTitle_ = new SimpleStringProperty();
   private SimpleStringProperty selectorNavigationNext_ = new SimpleStringProperty();
   private SimpleStringProperty outputPath_ = new SimpleStringProperty();
+  private SimpleObjectProperty<Type> type_ = new SimpleObjectProperty(Type.NOVEL);
 
-  private Type type_ = Type.NOVEL;
   private SimpleBooleanProperty debug_ = new SimpleBooleanProperty(false);
   private SimpleIntegerProperty numberOfBlocksOnPage_ = new SimpleIntegerProperty(40);
 
@@ -34,6 +32,7 @@ public class Process {
   public SimpleBooleanProperty isDebugProperty() { return debug_; }
   public SimpleIntegerProperty getNumberOfBlocksOnPageProperty() { return numberOfBlocksOnPage_; }
   public SimpleStringProperty getOutputPathProperty() { return outputPath_; }
+  public SimpleObjectProperty getTypeProperty() { return type_; }
 
   public String getSite() { return site_.getValue(); }
   public String getAddressToStart() { return addressToStart_.getValue(); }
@@ -42,7 +41,7 @@ public class Process {
   public String getSelectorContent() { return selectorContent_.getValue(); }
   public String getSelectorTitle() { return selectorTitle_.getValue(); }
   public String getSelectorNavigationNext() { return selectorNavigationNext_.getValue(); }
-  public Type getType() { return type_; }
+  public Type getType() { return type_.getValue(); }
   public boolean isDebug() { return debug_.getValue(); }
   public int getNumberOfBlocksOnPage() { return numberOfBlocksOnPage_.getValue(); }
   public String getOutputPath() { return outputPath_.getValue(); }
@@ -54,7 +53,7 @@ public class Process {
   public Process selectorContent(String value) { this.selectorContent_.setValue(value); return this; }
   public Process selectorTitle(String value) { this.selectorTitle_.setValue(value); return this; }
   public Process selectorNavigationNext(String value) { this.selectorNavigationNext_.setValue(value); return this; }
-  public Process type(Type value) { this.type_ = value; return this; }
+  public Process type(Type value) { this.type_.setValue(value); return this; }
   public Process debug(boolean value) { this.debug_.setValue(value); return this; }
   public Process numberOfBlocksOnPage(int value) { this.numberOfBlocksOnPage_.setValue(value); return this; }
   public Process outputPath(String value) { this.outputPath_.setValue(value); return this; }
@@ -66,10 +65,10 @@ public class Process {
   public void setSelectorContent_(String value) { this.selectorContent_.setValue(value); }
   public void setSelectorTitle_(String value) { this.selectorTitle_.setValue(value); }
   public void setSelectorNavigationNext_(String value) { this.selectorNavigationNext_.setValue(value); }
-  public void setType_(Type value) { this.type_ = value; }
+  public void setType_(Type value) { this.type_.setValue(value); }
   public void setDebug_(boolean value) { this.debug_.setValue(value); }
   public void setNumberOfBlocksOnPage_(int value) { this.numberOfBlocksOnPage_.setValue(value); }
-  public void setOutputPath(String value) { this.outputPath_.setValue(value); }
+  public void setOutputPath_(String value) { this.outputPath_.setValue(value); }
 
   @Override
   public String toString() {

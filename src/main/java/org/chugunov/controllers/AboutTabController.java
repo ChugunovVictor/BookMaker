@@ -1,4 +1,4 @@
 package org.chugunov.controllers;
 
-public class AboutTabController {
+public class AboutTabController implements Controller{
 }

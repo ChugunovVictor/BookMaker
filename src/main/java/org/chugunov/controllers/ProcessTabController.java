@@ -21,7 +21,7 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class ProcessTabController implements Initializable {
+public class ProcessTabController implements Initializable, Controller {
   private javafx.stage.DirectoryChooser path = new javafx.stage.DirectoryChooser();
   private Process target = new Process();
   private ObservableList types = FXCollections.observableArrayList(Type.values());
@@ -41,8 +41,10 @@ public class ProcessTabController implements Initializable {
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     typeField.setItems(types);
+  }
 
-    targetO = targetO.site(siteField)
+  public void init() {
+    this.targetO = targetO.site(siteField)
         .addressToStart(addressToStartField)
         .author(authorField)
         .debug(debugField)
@@ -60,10 +62,13 @@ public class ProcessTabController implements Initializable {
 
     File dir = path.showDialog(stage);
     if (dir != null) {
-      target.setOutputPath(dir.getAbsolutePath());
+      target.setOutputPath_(dir.getAbsolutePath());
     } else {
-      target.setOutputPath("");;
+      target.setOutputPath_("");
     }
+  }
+
+  public void proceed() {
     System.out.println(target);
   }
 }
