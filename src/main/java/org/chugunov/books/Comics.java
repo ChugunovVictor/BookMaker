@@ -61,9 +61,10 @@ public class Comics extends Book{
             try (PDPageContentStream contentStream = new PDPageContentStream(doc, page)) {
                 float offset_y = vertical_padding;
                 for(int i=0; i <arrayOfImages.length; i++){
-                    //contentStream.drawImage(arrayOfImages[i], 70, 250);
-                    contentStream.drawXObject(arrayOfImages[i], padding, offset_y, 
-                            w_size, h_size);
+                    arrayOfImages[i].setHeight((int) h_size);
+                    arrayOfImages[i].setWidth((int) w_size);
+                    contentStream.drawImage(arrayOfImages[i], padding, offset_y);
+
                     offset_y -= h_size + interval;
                 }
             }catch(Exception ex){

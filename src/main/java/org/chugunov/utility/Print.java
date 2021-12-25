@@ -1,5 +1,6 @@
 package org.chugunov.utility;
 
+import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -65,12 +66,11 @@ public class Print {
 
     public static void addPageNumbers( String in, String out  ){
         try {
-            File file = new File(in);
-            PDDocument document = PDDocument.load(file);
+            PDDocument document = Loader.loadPDF(new File(in));
 
             for( int i = 7; i < document.getNumberOfPages() - 3; i++ ){
                 PDPage page = document.getPage(i);
-                PDPageContentStream contentStream = new PDPageContentStream(document, page, true, true);
+                PDPageContentStream contentStream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true);
                 printPageNumber(contentStream, page.getMediaBox(), String.valueOf(i+1));
                 contentStream.close();
             }
@@ -83,7 +83,7 @@ public class Print {
 
     public static void prepareToPrint( String in, String out ){
         try {
-            PDDocument old_document = PDDocument.load(new File(in));
+            PDDocument old_document = Loader.loadPDF(new File(in));
             PDDocument new_document = new PDDocument();
 
             int interval = Print.devide(old_document.getNumberOfPages());

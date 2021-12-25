@@ -64,6 +64,9 @@ public class ProcessTabController implements Initializable, Controller {
       debugDepthLabel.setVisible(newValue);
       debugDepthField.setVisible(newValue);
     });
+
+    debugDepthLabel.setVisible(false);
+    debugDepthField.setVisible(false);
   }
 
   public void init() {

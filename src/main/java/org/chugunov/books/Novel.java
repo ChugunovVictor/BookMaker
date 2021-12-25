@@ -120,14 +120,23 @@ public class Novel extends Book{
         result.addAll(content_pages);
         return result;
     }
-    
+
+    private void drawLine(PDPageContentStream contentStream, float startX, float startY, float endX, float endY) throws IOException {
+        contentStream.moveTo(startX, startY);
+        contentStream.lineTo(endX, endY);
+        contentStream.stroke();
+    }
+
     public void printDecor(PDPageContentStream contentStream, PDRectangle mediabox, 
             String title, String page_number) throws IOException{
         /* draw decor top line with paragraph title */
         int decor_text_font_size = 9;
         contentStream.setLineWidth(0.5f);
-        contentStream.drawLine(margin / 2, mediabox.getHeight() - margin * 0.8f, 
+
+        drawLine(contentStream,margin / 2, mediabox.getHeight() - margin * 0.8f,
                 mediabox.getWidth() - margin / 2, mediabox.getHeight() - margin * 0.8f);
+
+
         
         printText(new String[]{ title }, font_italic, decor_text_font_size, 
                 mediabox.getWidth() - margin - getStringWidth(font_italic, title) / 1000 * decor_text_font_size, 
