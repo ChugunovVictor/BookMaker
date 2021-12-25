@@ -15,11 +15,6 @@ import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
     /* Want to put table of contents before all paragraphes. 
        to calculate it, need to save info in someplace before print */
 public class PreText extends Text{
-    
-        public interface PreTextFactory{
-            public PreText createPreText();
-        }
-    
         public PreText(){
             this.context = new ArrayList<>();
         }
@@ -27,11 +22,9 @@ public class PreText extends Text{
         public int page_for_table_of_content;
         
         public List<PDImageXObject> contextImages = new ArrayList<>();
-        
-        private PDDocument pd_document;
 
-        public void addImage(String source){
-            PDImageXObject result = getImage(source);
+        public void addImage(String source, PDDocument document){
+            PDImageXObject result = getImage(source, document);
             if (result != null) contextImages.add(result);
         }
 
@@ -39,10 +32,9 @@ public class PreText extends Text{
             context.add(source);
         }
 
-        private PDImageXObject getImage(String src){
+        private PDImageXObject getImage(String src, PDDocument document){
             try (InputStream in = new URL(src).openStream()) {
-                //Image result = ImageIO.read(in);
-                return JPEGFactory.createFromStream(pd_document, in);
+                return JPEGFactory.createFromStream(document, in);
             } catch (IOException ex) {
                 return null;
             }

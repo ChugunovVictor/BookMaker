@@ -18,6 +18,7 @@ public class Process {
   private SimpleObjectProperty<Type> type_ = new SimpleObjectProperty(Type.NOVEL);
 
   private SimpleBooleanProperty debug_ = new SimpleBooleanProperty(false);
+  private SimpleIntegerProperty debugDepth_ = new SimpleIntegerProperty(3);
   private SimpleIntegerProperty numberOfBlocksOnPage_ = new SimpleIntegerProperty(40);
 
   public Process(){}
@@ -30,6 +31,7 @@ public class Process {
   public SimpleStringProperty getSelectorTitleProperty() { return selectorTitle_; }
   public SimpleStringProperty getSelectorNavigationNextProperty() { return selectorNavigationNext_; }
   public SimpleBooleanProperty isDebugProperty() { return debug_; }
+  public SimpleIntegerProperty getDebugDepthProperty() { return debugDepth_; }
   public SimpleIntegerProperty getNumberOfBlocksOnPageProperty() { return numberOfBlocksOnPage_; }
   public SimpleStringProperty getOutputPathProperty() { return outputPath_; }
   public SimpleObjectProperty getTypeProperty() { return type_; }
@@ -43,6 +45,7 @@ public class Process {
   public String getSelectorNavigationNext() { return selectorNavigationNext_.getValue(); }
   public Type getType() { return type_.getValue(); }
   public boolean isDebug() { return debug_.getValue(); }
+  public int getDebugDepth() { return debugDepth_.getValue(); }
   public int getNumberOfBlocksOnPage() { return numberOfBlocksOnPage_.getValue(); }
   public String getOutputPath() { return outputPath_.getValue(); }
 
@@ -55,6 +58,7 @@ public class Process {
   public Process selectorNavigationNext(String value) { this.selectorNavigationNext_.setValue(value); return this; }
   public Process type(Type value) { this.type_.setValue(value); return this; }
   public Process debug(boolean value) { this.debug_.setValue(value); return this; }
+  public Process debugDepth(int value) { this.debugDepth_.setValue(value); return this; }
   public Process numberOfBlocksOnPage(int value) { this.numberOfBlocksOnPage_.setValue(value); return this; }
   public Process outputPath(String value) { this.outputPath_.setValue(value); return this; }
 
@@ -67,6 +71,7 @@ public class Process {
   public void setSelectorNavigationNext_(String value) { this.selectorNavigationNext_.setValue(value); }
   public void setType_(Type value) { this.type_.setValue(value); }
   public void setDebug_(boolean value) { this.debug_.setValue(value); }
+  public void setDebugDepth_(int value) { this.debugDepth_.setValue(value); }
   public void setNumberOfBlocksOnPage_(int value) { this.numberOfBlocksOnPage_.setValue(value); }
   public void setOutputPath_(String value) { this.outputPath_.setValue(value); }
 
@@ -78,6 +83,7 @@ public class Process {
     this.setSelectorTitle_(newValue.getSelectorTitle());
     this.setSelectorNavigationNext_(newValue.getSelectorNavigationNext());
     this.setNumberOfBlocksOnPage_(newValue.getNumberOfBlocksOnPage());
+    this.setDebugDepth_(newValue.getDebugDepth());
     this.setType_(newValue.getType());
     this.setAddressToStart_(newValue.getAddressToStart());
     this.setSite_(newValue.getSite());
@@ -100,6 +106,7 @@ public class Process {
         ", selectorNavigationNext_='" + selectorNavigationNext_.getValue() + '\'' +
         ", type_=" + type_.getValue() +
         ", debug_=" + debug_.getValue() +
+        ", debugDepth_=" + debugDepth_.getValue() +
         ", numberOfBlocksOnPage_=" + numberOfBlocksOnPage_.getValue() +
         ", outputPath_=" + outputPath_.getValue() +
         '}';

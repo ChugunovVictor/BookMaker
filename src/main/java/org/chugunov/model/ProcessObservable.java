@@ -26,7 +26,7 @@ public class ProcessObservable {
       authorField, titleField, selectorContentField, selectorTitleField, selectorNavigationNextField,
       outputPathField;
   private ComboBox<Type> typeField;
-  private Spinner numberOfBlocksOnPageField;
+  private Spinner numberOfBlocksOnPageField, debugDepthField;
   private CheckBox debugField;
 
   public ProcessObservable(Process value) {
@@ -93,6 +93,12 @@ public class ProcessObservable {
     return this;
   }
 
+  public ProcessObservable debugDepth(Spinner value) {
+    this.debugDepthField = value;
+    biDirectionalBindNumber(this.debugDepthField, this.value.getDebugDepthProperty(), this.value::setDebugDepth_);
+    return this;
+  }
+
   public ProcessObservable type(ComboBox<Type> value) {
     this.typeField = value;
     biDirectionalBindList(this.typeField, this.value.getTypeProperty(), this.value::setType_);
@@ -118,6 +124,8 @@ public class ProcessObservable {
   }
 
   private void biDirectionalBindNumber(Spinner ui, IntegerProperty object, Consumer<Integer> method) {
+    ui.getValueFactory().setValue(object.getValue());
+
     ui.valueProperty().addListener((observable, oldValue, newValue) -> {
       method.accept((int) newValue);
     });

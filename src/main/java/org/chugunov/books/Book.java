@@ -14,19 +14,9 @@ import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotation;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationLink;
 import org.apache.pdfbox.pdmodel.interactive.documentnavigation.destination.PDPageXYZDestination;
 import org.chugunov.utility.PreText;
+import org.chugunov.model.Process;
 
 public abstract class Book {
-    
-    public interface PDPageFactory{
-        public PDPage createPDPage();
-    }
-    
-    String book_author;
-    String book_title;
-    String book_site;
-    
-    public int number_of_rows_on_page = 38;
-    public int number_of_images_on_page = 3;
     static float fontSize = 12;
     static float margin = 50;
     float width = 620 - 2*margin;
@@ -34,32 +24,36 @@ public abstract class Book {
     public static PDFont font_standart = PDType1Font.TIMES_ROMAN;    //PDType0Font.load(document, new File("times.ttf")); 
     public static PDFont font_italic   = PDType1Font.TIMES_ITALIC;   //PDType0Font.load(document, new File("timesi.ttf")); 
     public static PDFont font_bold     = PDType1Font.TIMES_BOLD;     //PDType0Font.load(document, new File("timesbd.ttf"));
-    
+
+    public Book(PDDocument document, Process process){
+        this.doc = document;
+        this.process = process;
+    }
     PDDocument doc;
-    Book.PDPageFactory pf;
-    PDPage etalonPage;
+    Process process;
+    PDPage etalonPage = new PDPage();
     
     public PDPage createTitlePage(){ 
-        PDPage page = pf.createPDPage();
+        PDPage page = new PDPage();
         try (PDPageContentStream contentStream = new PDPageContentStream(doc, page)) {
             
             PDRectangle mediabox = page.getMediaBox();
             
             /* print author */
-            float authorWidth = font_standart.getStringWidth(book_author) / 1000 * fontSize;
-            printText(new String[]{ book_author }, font_standart, fontSize, mediabox.getUpperRightX() - margin - authorWidth,
+            float authorWidth = font_standart.getStringWidth(process.getAuthor()) / 1000 * fontSize;
+            printText(new String[]{ process.getAuthor() }, font_standart, fontSize, mediabox.getUpperRightX() - margin - authorWidth,
                     mediabox.getUpperRightY() - margin, 0, contentStream);
             
             /* print title */
-            float titleWidth = font_bold.getStringWidth(book_title) / 1000 * fontSize * 5;
-            printText(new String[]{ book_title }, font_bold, fontSize * 5, 
+            float titleWidth = font_bold.getStringWidth(process.getTitle()) / 1000 * fontSize * 5;
+            printText(new String[]{ process.getTitle() }, font_bold, fontSize * 5,
                     (mediabox.getWidth() - titleWidth)/2 , mediabox.getHeight()/2, 0, contentStream);
             
             /* print notes */
             printText(new String[]{ 
                 "Made with https://jsoup.org/", 
                 "Made with https://pdfbox.apache.org/",
-                "Using materials from " + book_site
+                "Using materials from " + process.getSite()
             }, font_italic, fontSize, 
                     margin + mediabox.getLowerLeftX() , 26 + margin + mediabox.getLowerLeftY(), -13, contentStream);
 
@@ -178,23 +172,23 @@ public abstract class Book {
                 if ( i == 0 ) // add string with paragraph title 
                 {
                     /* -2 because title has x2 font */
-                    int finalDestination = i + number_of_rows_on_page - 1;
+                    int finalDestination = i + process.getNumberOfBlocksOnPage() - 1;
                     if ( finalDestination > material.size() ) finalDestination = material.size();
 
                     //current.pages.add( printTOCPage(doc, material.subList(i, finalDestination ), fontSize, margin , current.title, page_counter, true));
                     
                     page_counter++;
 
-                    i+= number_of_rows_on_page - 1;
+                    i+= process.getNumberOfBlocksOnPage() - 1;
                 }else{
-                    int finalDestination = i + number_of_rows_on_page;
+                    int finalDestination = i + process.getNumberOfBlocksOnPage();
                     if ( finalDestination > material.size() ) finalDestination = material.size();
 
                     //current.pages.add(printTOCPage(doc, material.subList(i, finalDestination ), fontSize, margin , current.title, page_counter, false));
                     
                     page_counter++;
 
-                    i+= number_of_rows_on_page;
+                    i+= process.getNumberOfBlocksOnPage();
                 }
             }
         }else{
@@ -203,22 +197,22 @@ public abstract class Book {
                 if ( i == 0 ) // add string with paragraph title 
                 {
                     /* -2 because title has x2 font */
-                    int finalDestination = i + number_of_rows_on_page - 2;
+                    int finalDestination = i + process.getNumberOfBlocksOnPage() - 2;
                     if ( finalDestination > current.lines.size() ) finalDestination = current.lines.size();
 
                    // current.pages.add(addPage( doc, current.lines.subList(i, finalDestination ), fontSize, margin , current.title, page_counter, true));
                     
                     page_counter++;
 
-                    i+= number_of_rows_on_page - 2;
+                    i+= process.getNumberOfBlocksOnPage() - 2;
                 }else{
-                    int finalDestination = i + number_of_rows_on_page;
+                    int finalDestination = i + process.getNumberOfBlocksOnPage();
                     if ( finalDestination > current.lines.size() ) finalDestination = current.lines.size();
 
                     //current.pages.add(addPage( doc, current.lines.subList(i, finalDestination ), fontSize, margin , current.title, page_counter, false));
                     page_counter++;
 
-                    i+= number_of_rows_on_page;
+                    i+= process.getNumberOfBlocksOnPage();
                 }
             }
         }

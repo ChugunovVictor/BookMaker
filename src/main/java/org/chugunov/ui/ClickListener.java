@@ -21,6 +21,8 @@ import org.w3c.dom.events.EventTarget;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BooleanSupplier;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -28,10 +30,12 @@ import java.util.stream.Stream;
 public class ClickListener implements ChangeListener<Worker.State>, EventListener {
   private final WebView webView;
   private FlowPane flow;
+  private BooleanSupplier pickEnabled;
 
-  public ClickListener(WebView webView, FlowPane flow) {
+  public ClickListener(WebView webView, FlowPane flow, BooleanSupplier pickEnabled) {
     this.webView = webView;
     this.flow = flow;
+    this.pickEnabled = pickEnabled;
   }
 
   @Override
@@ -152,11 +156,10 @@ public class ClickListener implements ChangeListener<Worker.State>, EventListene
 
   @Override
   public void handleEvent(Event event) {
-    Node element = (Node) event.getTarget();
-    // String href = anchorElement.getHref();
-
-    createHiierarchy(element);
-
-    event.preventDefault();
+    if(pickEnabled.getAsBoolean()){
+      Node element = (Node) event.getTarget();
+      createHiierarchy(element);
+      event.preventDefault();
+    }
   }
 }

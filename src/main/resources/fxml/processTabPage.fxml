@@ -56,6 +56,9 @@
 
                         <Label text="Debug" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
                         <CheckBox fx:id="debugField"  GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                        <Label text="Debug Depth" GridPane.rowIndex="2" GridPane.columnIndex="0" visible="${debugField.selected}"/>
+                        <Spinner fx:id="debugDepthField" min="1" max="10" GridPane.rowIndex="2" GridPane.columnIndex="1" visible="${debugField.selected}"/>
                     </children>
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0" percentWidth="25.0" />

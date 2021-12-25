@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
@@ -12,6 +13,7 @@ import org.chugunov.utility.PreText;
 import org.chugunov.utility.ArabicToRoman;
 import org.chugunov.utility.PostText;
 import org.chugunov.utility.Text;
+import org.chugunov.model.Process;
 
 public class Novel extends Book{
 
@@ -19,7 +21,11 @@ public class Novel extends Book{
     List<PostText> toc;
     
     List<PDPage> content_pages;
-    
+
+    public Novel(PDDocument document, Process process) {
+        super(document, process);
+    }
+
     private List<PDPage> createTableOfContents(){ 
         ArrayList<String> strings = new ArrayList<>();
         for(PostText pt : paragraph){
@@ -51,15 +57,15 @@ public class Novel extends Book{
         int place_for_title = 2;
         int strings_left = p.context.size() + place_for_title;
         int from = 0;
-        int to = number_of_rows_on_page - place_for_title; 
+        int to = process.getNumberOfBlocksOnPage() - place_for_title;
         
-        while( strings_left > number_of_rows_on_page ){
+        while( strings_left > process.getNumberOfBlocksOnPage() ){
             result.add(createPage( p.title, page_counter, p.context.subList(from, to),
-                (number_of_rows_on_page - 2) == (to - from), is_toc
+                (process.getNumberOfBlocksOnPage() - 2) == (to - from), is_toc
             ));
             from = to;
-            to += number_of_rows_on_page;
-            strings_left -= number_of_rows_on_page;
+            to += process.getNumberOfBlocksOnPage();
+            strings_left -= process.getNumberOfBlocksOnPage();
             page_counter ++;
         }
         if (strings_left != 0)
@@ -72,7 +78,7 @@ public class Novel extends Book{
      
     private PDPage createPage(String title, int page_number, List<String> strings, 
             boolean is_Head_Start, boolean is_toc){
-        PDPage page = pf.createPDPage();
+        PDPage page = new PDPage();
         try (PDPageContentStream contentStream = new PDPageContentStream(doc, page)) {
         
             PDRectangle mediabox = page.getMediaBox();
@@ -148,7 +154,7 @@ public class Novel extends Book{
                 strings.addAll(calculateLines(font_standart, c));
             }
             prepare_paragraph.add(new PostText(page_counter, p.title, strings));
-            page_counter += calculatePages(strings.size(), number_of_rows_on_page);
+            page_counter += calculatePages(strings.size(), process.getNumberOfBlocksOnPage());
         }
         
         return prepare_paragraph;

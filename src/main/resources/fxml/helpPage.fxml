@@ -11,31 +11,60 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.geometry.Insets?>
-<HBox xmlns:fx="http://www.w3.org/2001/XInclude" fx:controller="org.chugunov.ui.controllers.HelpController">
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.TitledPane?>
+<HBox xmlns:fx="http://www.w3.org/2001/XInclude" fx:controller="org.chugunov.ui.controllers.HelpController"
+      stylesheets="@../css/helpPage.css">
     <padding>
         <Insets top="5" right="5" bottom="5" left="5" />
     </padding>
     <WebView fx:id="browser"></WebView>
     <VBox prefWidth="400">
         <FlowPane fx:id="treePane" hgap="10" vgap="10" orientation="VERTICAL"></FlowPane>
-        <GridPane vgap="5">
+        <GridPane vgap="5" hgap="5">
             <padding>
                 <Insets top="5" right="5" bottom="5" left="5" />
             </padding>
             <children>
-                <Label text="Start Page" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-                <TextField fx:id="addressToStartField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                <Label text="Enable Pick" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <CheckBox fx:id="pickEnabledField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 
-                <Label text="Selector Title" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-                <TextField fx:id="selectorTitleField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                <Label text="Start Page" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                <HBox GridPane.rowIndex="2" GridPane.columnIndex="1">
+                    <TextField fx:id="addressToStartField" />
+                    <Button text="Choose" onAction="#fillAddressToStart"></Button>
+                </HBox>
 
-                <Label text="Selector Content" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-                <TextField fx:id="selectorContentField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                <TitledPane text="Selectors" GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.columnSpan="2" collapsible="false">
+                    <GridPane vgap="5" hgap="5">
+                        <children>
+                            <Label text="Title" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                            <TextField fx:id="selectorTitleField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                            <Button text="Check" GridPane.rowIndex="1" GridPane.columnIndex="0" onAction="#checkTitle"/>
+                            <TextField fx:id="selectorTitleCheckField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
 
-                <Label text="Selector Next Page" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-                <TextField fx:id="selectorNavigationNextField" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                            <Label GridPane.rowIndex="2" GridPane.columnIndex="0"></Label>
 
-                <Button fx:id="saveBtn" text="Save" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+                            <Label text="Content" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                            <TextField fx:id="selectorContentField" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                            <Button text="Check" GridPane.rowIndex="4" GridPane.columnIndex="0" onAction="#checkContent"/>
+                            <TextField fx:id="selectorContentCheckField" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+                            <Label GridPane.rowIndex="5" GridPane.columnIndex="0"></Label>
+
+                            <Label text="Next Page" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+                            <TextField fx:id="selectorNavigationNextField" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+                            <Button text="Check" GridPane.rowIndex="7" GridPane.columnIndex="0" onAction="#checkNavigationNext"/>
+                            <TextField fx:id="selectorNavigationNextCheckField" GridPane.rowIndex="7" GridPane.columnIndex="1"/>
+                        </children>
+                        <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0" percentWidth="20.0"/>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0" percentWidth="80.0"/>
+                        </columnConstraints>
+                    </GridPane>
+                </TitledPane>
+
+                <Button fx:id="saveBtn" text="Save" GridPane.rowIndex="8" GridPane.columnIndex="0" onAction="#save"/>
             </children>
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0" percentWidth="20.0"/>

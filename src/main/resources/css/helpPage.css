@@ -1,0 +1,7 @@
+.text-field, .combo-box, .h-box{
+    -fx-pref-width: 250px;
+}
+
+.button{
+    -fx-pref-width: 100px;
+}

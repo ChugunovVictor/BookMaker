@@ -8,14 +8,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import org.chugunov.BookMaker;
 import org.chugunov.model.Process;
 import org.chugunov.model.ProcessObservable;
+import org.chugunov.model.Scan;
 import org.chugunov.model.Type;
 import org.chugunov.ui.Controller;
 
@@ -31,18 +30,14 @@ public class ProcessTabController implements Initializable, Controller {
   private ObservableList types = FXCollections.observableArrayList(Type.values());
   private ProcessObservable targetO = new ProcessObservable(target);
 
-  @FXML
-  private ComboBox<Type> typeField;
-  @FXML
-  private ComboBox<Process> examplesField;
-  @FXML
-  private TextField siteField, addressToStartField,
+  @FXML private ComboBox<Type> typeField;
+  @FXML private ComboBox<Process> examplesField;
+  @FXML private TextField siteField, addressToStartField,
       authorField, titleField, selectorContentField, selectorTitleField, selectorNavigationNextField,
       outputPathField;
-  @FXML
-  private Spinner numberOfBlocksOnPageField;
-  @FXML
-  private CheckBox debugField;
+  @FXML private Spinner numberOfBlocksOnPageField, debugDepthField;
+  @FXML private CheckBox debugField;
+  @FXML private Label debugDepthLabel;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -64,6 +59,11 @@ public class ProcessTabController implements Initializable, Controller {
     } catch (URISyntaxException e) {
       e.printStackTrace();
     }
+
+    debugField.selectedProperty().addListener((observable, oldValue, newValue) -> {
+      debugDepthLabel.setVisible(newValue);
+      debugDepthField.setVisible(newValue);
+    });
   }
 
   public void init() {
@@ -71,6 +71,7 @@ public class ProcessTabController implements Initializable, Controller {
         .addressToStart(addressToStartField)
         .author(authorField)
         .debug(debugField)
+        .debugDepth(debugDepthField)
         .title(titleField)
         .numberOfBlocksOnPage(numberOfBlocksOnPageField)
         .outputPath(outputPathField)
@@ -91,6 +92,13 @@ public class ProcessTabController implements Initializable, Controller {
     }
   }
 
+  public void useHelp(Scan scan) {
+    target.setAddressToStart_(scan.getAddressToStart());
+    target.setSelectorTitle_(scan.getSelectorTitle());
+    target.setSelectorContent_(scan.getSelectorContent());
+    target.setSelectorNavigationNext_(scan.getSelectorNavigateNext());
+  }
+
   public void help() throws IOException {
     Stage stage = (Stage) typeField.getScene().getWindow();
     String site = siteField.getText();
@@ -99,23 +107,24 @@ public class ProcessTabController implements Initializable, Controller {
 
     FXMLLoader loader = new FXMLLoader(ProcessTabController.class.getClassLoader().getResource("fxml/helpPage.fxml"));
     scene.setRoot(loader.load());
+
     HelpController controller = loader.getController();
-    controller.init(site);
+    controller.init(site, this::useHelp);
 
     Stage newWindow = new Stage();
     newWindow.setTitle(site);
     newWindow.setWidth(1200);
-    newWindow.setHeight(600);
+    newWindow.setHeight(750);
     newWindow.setScene(scene);
-
-    // Set position of second window, related to primary window.
     newWindow.setX(stage.getX() + 100);
     newWindow.setY(stage.getY() + 100);
+    newWindow.setResizable(false);
 
     newWindow.show();
   }
 
   public void proceed() {
-    System.out.println(target);
+    // todo status
+    new BookMaker(target);
   }
 }

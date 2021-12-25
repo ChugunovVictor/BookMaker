@@ -1,107 +1,97 @@
 package org.chugunov;
 
-import org.chugunov.utility.PreText;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import org.apache.pdfbox.contentstream.PDContentStream;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.chugunov.books.Book;
+import org.chugunov.books.Comics;
+import org.chugunov.books.Novel;
+import org.chugunov.model.Process;
+import org.chugunov.utility.PreText;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-public class BookMaker {
-    Book draft;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-    boolean debug;
-    String address_to_start;
-    String selector_content;
-    String selector_title;
-    String selector_navigation_next;
-    
-    PDDocument document;
-    PDContentStream contentStream;
-    
-    ArrayList <PreText> materialForBook = new ArrayList<>();
-    
-    PreText.PreTextFactory ptf;
-    
-    private void parseHTTP() throws IOException{
-        Document doc = Jsoup.connect(address_to_start).timeout(0).get();
+public class BookMaker {
+    public BookMaker(Process process) {
+        try(PDDocument document = new PDDocument()){
+            Book draft = process.getType().createBook(document, process);
+
+            // createBookContent
+            PDPage title_page = draft.createTitlePage();
+            List<PDPage> content = draft.createContent(parseHTTP(process, document));
+
+            // composeBookParts
+            document.addPage(title_page);
+
+            for (PDPage page : content){
+                document.addPage(page);
+            }
+
+            // finalise
+            document.save(new File(
+                (process.getOutputPath() == null || process.getOutputPath().isEmpty())
+                    ?  process.getTitle() + ".pdf"
+                    : process.getOutputPath() + "/" +  process.getTitle() + ".pdf"
+            ));
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+    private String encode(String str){
+        return str.replaceAll(" ", "%20");
+    }
+
+    private ArrayList <PreText> parseHTTP(Process process, PDDocument document) throws IOException{
+        Document doc = Jsoup.connect(process.getAddressToStart()).timeout(0).get();
         
-        int debug_link_counter = 3;        
-    
-        while ( doc!= null  && debug_link_counter != 0 ){  // replace recursively ? 
+        int debug_link_counter = 0;
+
+        ArrayList <PreText> materialForBook = new ArrayList<>();
+
+        while ( doc!= null  && debug_link_counter < process.getDebugDepth()){  // replace recursively ?
             String new_url = "";
-            for (Element current_tag : doc.select(selector_navigation_next)){
+            for (Element current_tag : doc.select(process.getSelectorNavigationNext())){
                  new_url = current_tag.attr("href");
                  System.out.println(new_url);
             }
             
             String title = "";
-            for (Element current_tag : doc.select(selector_title)){
+            for (Element current_tag : doc.select(process.getSelectorTitle())){
                 title += current_tag.text();
             }
 
-            PreText pt = ptf.createPreText();
+            PreText pt = new PreText();
             pt.setTitle(title);
-            for (Element current_tag : doc.select(selector_content)){
+            for (Element current_tag : doc.select(process.getSelectorContent())){
                 pt.addText( "    " + current_tag.text() );
-                pt.addImage( current_tag.absUrl("src") );
+                String url = current_tag.absUrl("src");
+                pt.addImage( encode(url), document );
             }
             
             materialForBook.add( pt );
             
             if( new_url != "" ){ 
                 doc = null;
-                while(doc == null){
+                int reconnect_attempt_count = 0;
+                while(doc == null && reconnect_attempt_count < 5){
                     try{
                         //doc = Jsoup.parse(new URL(new_url).openStream(), "UTF-8", new_url);
                         doc = Jsoup.connect(new_url).timeout(0).get(); 
                     }catch(Exception ex){
-                        // try connect again and again until success    
+                        reconnect_attempt_count++;
                     }
                 }
-            }else break;
-            
-            if (debug) debug_link_counter--;
-        }
-    }
+            } else break;
 
-    PDPage title_page;
-    List<PDPage> content;
-        
-    private void createBookContent(){
-        this.title_page = draft.createTitlePage();
-        this.content = draft.createContent(materialForBook);
-    }
-    
-    private void composeBookParts(){
-        document.addPage(title_page);
-     
-        for (PDPage page : content){
-            document.addPage(page);
+            if (process.isDebug()) debug_link_counter++;
         }
-    }
-    
-    String book_file;
-    
-    private void createFile() throws IOException{
-        document.save(new File(book_file));
-        document.close();
-    }
-    
-    public void createBook(){
-        try{
-            parseHTTP();
-            createBookContent();
-            composeBookParts();
-            createFile();
-        }catch(Exception ex){
-            ex.printStackTrace();
-        }
+
+        return materialForBook;
     }
 }
