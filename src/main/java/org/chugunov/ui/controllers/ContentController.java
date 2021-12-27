@@ -6,19 +6,17 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-import javafx.stage.Stage;
-import org.chugunov.model.Scan;
+import org.chugunov.model.ContentObservable;
+import org.chugunov.model.Process;
 import org.chugunov.ui.ClickListener;
 import org.chugunov.ui.Controller;
-import org.chugunov.utility.PreText;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.IOException;
-import java.util.function.Consumer;
 
-public class HelpController implements Controller {
+public class ContentController implements Controller {
   @FXML
   private WebView browser;
   @FXML
@@ -30,24 +28,22 @@ public class HelpController implements Controller {
   @FXML
   private CheckBox pickEnabledField;
 
-  private Consumer<Scan> callback;
+  private Process process;
+  private ContentObservable contentProperty;
 
-  public void init(String site, Consumer<Scan> callback) {
-    this.callback = callback;
+  public void init(Process target) {
     WebEngine webEngine = browser.getEngine();
-    webEngine.load(site);
+    webEngine.load(target.getBasic().getSite());
     webEngine.getLoadWorker().stateProperty().addListener(
         new ClickListener(browser, treePane, pickEnabledField::isSelected));
-  }
 
-  public void save(){
-    this.callback.accept(new Scan(
-        addressToStartField.getText(),
-        selectorTitleField.getText(),
-        selectorContentField.getText(),
-        selectorNavigationNextField.getText()
-    ));
-    ((Stage)this.browser.getScene().getWindow()).close();
+    this.process = target;
+    this.contentProperty = new ContentObservable(this.process.getContent());
+    this.contentProperty = contentProperty
+        .addressToStart(addressToStartField)
+        .selectorContent(selectorContentField)
+        .selectorNavigationNext(selectorNavigationNextField)
+        .selectorTitle(selectorTitleField);
   }
 
   public void fillAddressToStart(){

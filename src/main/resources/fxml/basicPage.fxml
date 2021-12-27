@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane vgap="5" xmlns:fx="http://www.w3.org/2001/XInclude"
+          fx:controller="org.chugunov.ui.controllers.BasicController"
+          stylesheets="@../css/processTabPage.css">
+    <children>
+        <Label text="Type" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <ComboBox fx:id="typeField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+        <Label text="URL" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <TextField fx:id="siteField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+        <Label text="Author" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <TextField fx:id="authorField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+        <Label text="Title" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+        <TextField fx:id="titleField" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+        <Label text="Path" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+        <HBox GridPane.rowIndex="4" GridPane.columnIndex="1">
+            <TextField fx:id="outputPathField"/>
+            <Button text="..." onAction="#chooseDirectory"></Button>
+        </HBox>
+
+        <Label text="Examples" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+        <ComboBox fx:id="examplesField" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+    </children>
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0" percentWidth="25.0"/>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0" percentWidth="75.0"/>
+    </columnConstraints>
+</GridPane>

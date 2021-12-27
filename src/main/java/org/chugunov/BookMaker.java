@@ -17,9 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookMaker {
+    Logger logger = new Logger();
+
     public BookMaker(Process process) {
         try(PDDocument document = new PDDocument()){
-            Book draft = process.getType().createBook(document, process);
+            Book draft = process.getBasic().getType().createBook(document, process);
 
             // createBookContent
             PDPage title_page = draft.createTitlePage();
@@ -34,9 +36,9 @@ public class BookMaker {
 
             // finalise
             document.save(new File(
-                (process.getOutputPath() == null || process.getOutputPath().isEmpty())
-                    ?  process.getTitle() + ".pdf"
-                    : process.getOutputPath() + "/" +  process.getTitle() + ".pdf"
+                (process.getBasic().getOutputPath() == null || process.getBasic().getOutputPath().isEmpty())
+                    ?  process.getBasic().getTitle() + ".pdf"
+                    : process.getBasic().getOutputPath() + "/" +  process.getBasic().getTitle() + ".pdf"
             ));
         }catch(Exception ex){
             ex.printStackTrace();
@@ -48,27 +50,27 @@ public class BookMaker {
     }
 
     private ArrayList <PreText> parseHTTP(Process process, PDDocument document) throws IOException{
-        Document doc = Jsoup.connect(process.getAddressToStart()).timeout(0).get();
+        Document doc = Jsoup.connect(process.getContent().getAddressToStart()).timeout(0).get();
         
         int debug_link_counter = 0;
 
         ArrayList <PreText> materialForBook = new ArrayList<>();
 
-        while ( doc!= null  && debug_link_counter < process.getDebugDepth()){  // replace recursively ?
+        while ( doc!= null  && debug_link_counter < process.getPreview().getDebugDepth()){  // replace recursively ?
             String new_url = "";
-            for (Element current_tag : doc.select(process.getSelectorNavigationNext())){
-                 new_url = current_tag.attr("href");
-                 System.out.println(new_url);
+            for (Element current_tag : doc.select(process.getContent().getSelectorNavigationNext())){
+                new_url = current_tag.attr("href");
+                logger.log(new_url);
             }
             
             String title = "";
-            for (Element current_tag : doc.select(process.getSelectorTitle())){
+            for (Element current_tag : doc.select(process.getContent().getSelectorTitle())){
                 title += current_tag.text();
             }
 
             PreText pt = new PreText();
             pt.setTitle(title);
-            for (Element current_tag : doc.select(process.getSelectorContent())){
+            for (Element current_tag : doc.select(process.getContent().getSelectorContent())){
                 pt.addText( "    " + current_tag.text() );
                 String url = current_tag.absUrl("src");
                 pt.addImage( encode(url), document );
@@ -89,7 +91,7 @@ public class BookMaker {
                 }
             } else break;
 
-            if (process.isDebug()) debug_link_counter++;
+            if (process.getPreview().isDebug()) debug_link_counter++;
         }
 
         return materialForBook;

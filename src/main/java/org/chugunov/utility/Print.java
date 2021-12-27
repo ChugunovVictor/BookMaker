@@ -4,6 +4,7 @@ import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.chugunov.Logger;
 
 import java.io.File;
 import java.util.Arrays;
@@ -91,7 +92,7 @@ public class Print {
                 int end = (start + interval - 1)<= old_document.getNumberOfPages() ? (start + interval - 1) : old_document.getNumberOfPages();
                 int[]pages = Print.sort(start, end);
 
-                System.out.println(Arrays.toString(pages));
+                //Logger.log(Arrays.toString(pages));
 
                 for( int i = 0; i < pages.length; i++ ){
                     if( pages[i] != -1)
@@ -107,7 +108,7 @@ public class Print {
             old_document.close();
 
         }catch (Exception ex){
-            System.out.println(ex.getMessage());
+            //Logger.log(ex.getMessage());
         }
     }
 }

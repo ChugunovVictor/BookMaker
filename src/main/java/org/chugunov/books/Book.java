@@ -40,20 +40,20 @@ public abstract class Book {
             PDRectangle mediabox = page.getMediaBox();
             
             /* print author */
-            float authorWidth = font_standart.getStringWidth(process.getAuthor()) / 1000 * fontSize;
-            printText(new String[]{ process.getAuthor() }, font_standart, fontSize, mediabox.getUpperRightX() - margin - authorWidth,
+            float authorWidth = font_standart.getStringWidth(process.getBasic().getAuthor()) / 1000 * fontSize;
+            printText(new String[]{ process.getBasic().getAuthor() }, font_standart, fontSize, mediabox.getUpperRightX() - margin - authorWidth,
                     mediabox.getUpperRightY() - margin, 0, contentStream);
             
             /* print title */
-            float titleWidth = font_bold.getStringWidth(process.getTitle()) / 1000 * fontSize * 5;
-            printText(new String[]{ process.getTitle() }, font_bold, fontSize * 5,
+            float titleWidth = font_bold.getStringWidth(process.getBasic().getTitle()) / 1000 * fontSize * 5;
+            printText(new String[]{ process.getBasic().getTitle() }, font_bold, fontSize * 5,
                     (mediabox.getWidth() - titleWidth)/2 , mediabox.getHeight()/2, 0, contentStream);
             
             /* print notes */
             printText(new String[]{ 
                 "Made with https://jsoup.org/", 
                 "Made with https://pdfbox.apache.org/",
-                "Using materials from " + process.getSite()
+                "Using materials from " + process.getBasic().getSite()
             }, font_italic, fontSize, 
                     margin + mediabox.getLowerLeftX() , 26 + margin + mediabox.getLowerLeftY(), -13, contentStream);
 
@@ -172,23 +172,23 @@ public abstract class Book {
                 if ( i == 0 ) // add string with paragraph title 
                 {
                     /* -2 because title has x2 font */
-                    int finalDestination = i + process.getNumberOfBlocksOnPage() - 1;
+                    int finalDestination = i + process.getPreview().getNumberOfBlocksOnPage() - 1;
                     if ( finalDestination > material.size() ) finalDestination = material.size();
 
                     //current.pages.add( printTOCPage(doc, material.subList(i, finalDestination ), fontSize, margin , current.title, page_counter, true));
                     
                     page_counter++;
 
-                    i+= process.getNumberOfBlocksOnPage() - 1;
+                    i+= process.getPreview().getNumberOfBlocksOnPage() - 1;
                 }else{
-                    int finalDestination = i + process.getNumberOfBlocksOnPage();
+                    int finalDestination = i + process.getPreview().getNumberOfBlocksOnPage();
                     if ( finalDestination > material.size() ) finalDestination = material.size();
 
                     //current.pages.add(printTOCPage(doc, material.subList(i, finalDestination ), fontSize, margin , current.title, page_counter, false));
                     
                     page_counter++;
 
-                    i+= process.getNumberOfBlocksOnPage();
+                    i+= process.getPreview().getNumberOfBlocksOnPage();
                 }
             }
         }else{
@@ -197,22 +197,22 @@ public abstract class Book {
                 if ( i == 0 ) // add string with paragraph title 
                 {
                     /* -2 because title has x2 font */
-                    int finalDestination = i + process.getNumberOfBlocksOnPage() - 2;
+                    int finalDestination = i + process.getPreview().getNumberOfBlocksOnPage() - 2;
                     if ( finalDestination > current.lines.size() ) finalDestination = current.lines.size();
 
                    // current.pages.add(addPage( doc, current.lines.subList(i, finalDestination ), fontSize, margin , current.title, page_counter, true));
                     
                     page_counter++;
 
-                    i+= process.getNumberOfBlocksOnPage() - 2;
+                    i+= process.getPreview().getNumberOfBlocksOnPage() - 2;
                 }else{
-                    int finalDestination = i + process.getNumberOfBlocksOnPage();
+                    int finalDestination = i + process.getPreview().getNumberOfBlocksOnPage();
                     if ( finalDestination > current.lines.size() ) finalDestination = current.lines.size();
 
                     //current.pages.add(addPage( doc, current.lines.subList(i, finalDestination ), fontSize, margin , current.title, page_counter, false));
                     page_counter++;
 
-                    i+= process.getNumberOfBlocksOnPage();
+                    i+= process.getPreview().getNumberOfBlocksOnPage();
                 }
             }
         }

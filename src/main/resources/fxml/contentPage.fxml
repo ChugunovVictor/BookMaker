@@ -13,7 +13,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.TitledPane?>
-<HBox xmlns:fx="http://www.w3.org/2001/XInclude" fx:controller="org.chugunov.ui.controllers.HelpController"
+<HBox xmlns:fx="http://www.w3.org/2001/XInclude" fx:controller="org.chugunov.ui.controllers.ContentController"
       stylesheets="@../css/helpPage.css">
     <padding>
         <Insets top="5" right="5" bottom="5" left="5" />
@@ -63,8 +63,6 @@
                         </columnConstraints>
                     </GridPane>
                 </TitledPane>
-
-                <Button fx:id="saveBtn" text="Save" GridPane.rowIndex="8" GridPane.columnIndex="0" onAction="#save"/>
             </children>
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0" percentWidth="20.0"/>

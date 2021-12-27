@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.application.Application;
+import org.chugunov.Logger;
 import org.chugunov.ui.controllers.MainController;
 import org.chugunov.ui.controllers.ProcessTabController;
 import java.io.IOException;

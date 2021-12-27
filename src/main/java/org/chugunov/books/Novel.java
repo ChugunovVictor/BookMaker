@@ -57,15 +57,15 @@ public class Novel extends Book{
         int place_for_title = 2;
         int strings_left = p.context.size() + place_for_title;
         int from = 0;
-        int to = process.getNumberOfBlocksOnPage() - place_for_title;
+        int to = process.getPreview().getNumberOfBlocksOnPage() - place_for_title;
         
-        while( strings_left > process.getNumberOfBlocksOnPage() ){
+        while( strings_left > process.getPreview().getNumberOfBlocksOnPage() ){
             result.add(createPage( p.title, page_counter, p.context.subList(from, to),
-                (process.getNumberOfBlocksOnPage() - 2) == (to - from), is_toc
+                (process.getPreview().getNumberOfBlocksOnPage() - 2) == (to - from), is_toc
             ));
             from = to;
-            to += process.getNumberOfBlocksOnPage();
-            strings_left -= process.getNumberOfBlocksOnPage();
+            to += process.getPreview().getNumberOfBlocksOnPage();
+            strings_left -= process.getPreview().getNumberOfBlocksOnPage();
             page_counter ++;
         }
         if (strings_left != 0)
@@ -163,7 +163,7 @@ public class Novel extends Book{
                 strings.addAll(calculateLines(font_standart, c));
             }
             prepare_paragraph.add(new PostText(page_counter, p.title, strings));
-            page_counter += calculatePages(strings.size(), process.getNumberOfBlocksOnPage());
+            page_counter += calculatePages(strings.size(), process.getPreview().getNumberOfBlocksOnPage());
         }
         
         return prepare_paragraph;
