@@ -6,7 +6,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-import org.chugunov.model.ContentObservable;
+import org.chugunov.model.properties.ContentProperty;
 import org.chugunov.model.Process;
 import org.chugunov.ui.ClickListener;
 import org.chugunov.ui.Controller;
@@ -29,7 +29,7 @@ public class ContentController implements Controller {
   private CheckBox pickEnabledField;
 
   private Process process;
-  private ContentObservable contentProperty;
+  private ContentProperty contentProperty;
 
   public void init(Process target) {
     WebEngine webEngine = browser.getEngine();
@@ -38,7 +38,7 @@ public class ContentController implements Controller {
         new ClickListener(browser, treePane, pickEnabledField::isSelected));
 
     this.process = target;
-    this.contentProperty = new ContentObservable(this.process.getContent());
+    this.contentProperty = new ContentProperty(this.process.getContent());
     this.contentProperty = contentProperty
         .addressToStart(addressToStartField)
         .selectorContent(selectorContentField)

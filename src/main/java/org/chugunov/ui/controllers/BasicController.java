@@ -7,12 +7,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TitledPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.chugunov.model.Basic;
-import org.chugunov.model.BasicObservable;
+import org.chugunov.model.properties.BasicProperty;
 import org.chugunov.model.Process;
 import org.chugunov.model.Type;
 import org.chugunov.ui.Controller;
@@ -21,14 +17,13 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class BasicController implements Initializable, Controller {
   private javafx.stage.DirectoryChooser path = new javafx.stage.DirectoryChooser();
 
   private Process process;
-  private BasicObservable basicProperty;
+  private BasicProperty basicProperty;
 
   private ObservableList types = FXCollections.observableArrayList(Type.values());
 
@@ -56,7 +51,7 @@ public class BasicController implements Initializable, Controller {
 
   public void init(Process target) {
     this.process = target;
-    this.basicProperty = new BasicObservable(this.process.getBasic());
+    this.basicProperty = new BasicProperty(this.process.getBasic());
     this.basicProperty = basicProperty.site(siteField)
         .author(authorField)
         .title(titleField)
@@ -65,15 +60,7 @@ public class BasicController implements Initializable, Controller {
   }
 
   public void chooseDirectory() {
-    Stage stage = (Stage) typeField.getScene().getWindow();
-
-    File dir = path.showDialog(stage);
-    if (dir != null) {
-      this.process.getBasic().setOutputPath_(dir.getAbsolutePath());
-    } else {
-      this.process.getBasic().setOutputPath_("");
-    }
+    File dir = path.showDialog((Stage) typeField.getScene().getWindow());
+    this.process.getBasic().setOutputPath_(dir != null ? dir.getAbsolutePath() : "");
   }
-
-
 }

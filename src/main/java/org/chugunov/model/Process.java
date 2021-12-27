@@ -17,8 +17,13 @@ public class Process {
   public void setPreview_(Preview value) { this.preview_ = value; }
 
   public void copy(Process newValue){
-    this.setBasic_(newValue.getBasic());
-    this.setContent_(newValue.getContent());
-    this.setPreview_(newValue.getPreview());
+    this.getBasic().copy(newValue.getBasic());
+    this.getContent().copy(newValue.getContent());
+    this.getPreview().copy(newValue.getPreview());
+  }
+
+  @Override
+  public String toString() {
+    return basic_.getTitle() + " (" + basic_.getSite() + ")";
   }
 }

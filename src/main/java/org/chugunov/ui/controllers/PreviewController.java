@@ -6,7 +6,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import org.chugunov.BookMaker;
-import org.chugunov.model.PreviewObservable;
+import org.chugunov.model.properties.PreviewProperty;
 import org.chugunov.model.Process;
 import org.chugunov.ui.Controller;
 
@@ -19,7 +19,7 @@ public class PreviewController implements Initializable, Controller {
   @FXML private Label debugDepthLabel;
 
   private Process target;
-  private PreviewObservable previewProperty;
+  private PreviewProperty previewProperty;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -34,7 +34,7 @@ public class PreviewController implements Initializable, Controller {
 
   public void init(Process target){
     this.target = target;
-    this.previewProperty = new PreviewObservable(this.target.getPreview());
+    this.previewProperty = new PreviewProperty(this.target.getPreview());
     this.previewProperty = this.previewProperty
         .debug(debugField)
         .debugDepth(debugDepthField)
