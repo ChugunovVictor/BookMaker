@@ -4,23 +4,26 @@
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="org.chugunov.ui.controllers.ProcessTabController"
-      stylesheets="@../css/processTabPage.css"
-      spacing="5">
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Accordion?>
+<Accordion xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:id="accordion"
+           fx:controller="org.chugunov.ui.controllers.ProcessTabController"
+           stylesheets="@../css/processTabPage.css"
+           expandedPane="$basic">
     <padding>
         <Insets top="5" right="5" bottom="5" left="5"/>
     </padding>
-    <children>
+    <panes>
         <TitledPane fx:id="basic" text="Basic">
             <fx:include fx:id="basicPage" source="basicPage.fxml"/>
         </TitledPane>
         <TitledPane fx:id="content" text="Content">
             <fx:include fx:id="contentPage" source="contentPage.fxml"/>
         </TitledPane>
-        <TitledPane fx:id="settings" text="Other">
+        <TitledPane fx:id="preview" text="Preview">
             <fx:include fx:id="previewPage" source="previewPage.fxml"/>
         </TitledPane>
-    </children>
-</VBox>
+    </panes>
+</Accordion>
