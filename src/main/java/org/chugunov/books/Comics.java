@@ -10,7 +10,7 @@ import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.chugunov.utility.PreText;
 import org.chugunov.model.Process;
 
-public class Comics extends Book{
+public class Comics extends Book2 {
 
     public Comics(PDDocument document, Process process) {
         super(document, process);

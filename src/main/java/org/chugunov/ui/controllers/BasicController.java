@@ -8,32 +8,35 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.chugunov.model.Basic;
+import org.chugunov.model.Basic2;
 import org.chugunov.model.properties.BasicProperty;
 import org.chugunov.model.Process;
-import org.chugunov.model.Type;
 import org.chugunov.ui.Controller;
+import org.chugunov.utility.BiDirectional;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class BasicController implements Initializable, Controller {
+public class BasicController extends Controller implements Initializable {
   private javafx.stage.DirectoryChooser path = new javafx.stage.DirectoryChooser();
 
   private Process process;
+
   private BasicProperty basicProperty;
 
-  private ObservableList types = FXCollections.observableArrayList(Type.values());
+  @BiDirectional
+  private Basic2 basic;
 
-  @FXML private ComboBox<Type> typeField;
   @FXML private ComboBox<Process> examplesField;
-  @FXML private TextField siteField, authorField, titleField, outputPathField;
+  @FXML private TextField siteField, authorField, titleField, outputPathField, loginField, passwordField;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    typeField.setItems(types);
     try {
       ObjectMapper objectMapper = new ObjectMapper();
       URL resource = BasicController.class.getClassLoader().getResource("examples.json");
@@ -44,23 +47,31 @@ public class BasicController implements Initializable, Controller {
       examplesField.valueProperty().addListener((observable, oldValue, newValue) -> {
         this.process.copy(newValue);
       });
-    } catch (IOException | URISyntaxException e) {
+    } catch (Exception e) {
       e.printStackTrace();
     }
   }
 
   public void init(Process target) {
     this.process = target;
+    this.basic = new Basic2();
     this.basicProperty = new BasicProperty(this.process.getBasic());
     this.basicProperty = basicProperty.site(siteField)
         .author(authorField)
         .title(titleField)
         .outputPath(outputPathField)
-        .type(typeField);
+        .login(loginField)
+        .password(passwordField);
+
+    try {
+      this.processBinding();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   public void chooseDirectory() {
-    File dir = path.showDialog((Stage) typeField.getScene().getWindow());
+    File dir = path.showDialog((Stage) examplesField.getScene().getWindow());
     this.process.getBasic().setOutputPath_(dir != null ? dir.getAbsolutePath() : "");
   }
 }

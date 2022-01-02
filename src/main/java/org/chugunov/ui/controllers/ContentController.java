@@ -16,7 +16,7 @@ import org.jsoup.nodes.Element;
 
 import java.io.IOException;
 
-public class ContentController implements Controller {
+public class ContentController extends Controller {
   @FXML
   private WebView browser;
   @FXML
@@ -30,20 +30,23 @@ public class ContentController implements Controller {
 
   private Process process;
   private ContentProperty contentProperty;
+  private WebEngine webEngine;
 
   public void init(Process target) {
-    WebEngine webEngine = browser.getEngine();
-    webEngine.load(target.getBasic().getSite());
-    webEngine.getLoadWorker().stateProperty().addListener(
-        new ClickListener(browser, treePane, pickEnabledField::isSelected));
-
-    this.process = target;
+    this.webEngine = browser.getEngine();
+    this.process= target;
     this.contentProperty = new ContentProperty(this.process.getContent());
     this.contentProperty = contentProperty
         .addressToStart(addressToStartField)
         .selectorContent(selectorContentField)
         .selectorNavigationNext(selectorNavigationNextField)
         .selectorTitle(selectorTitleField);
+  }
+
+  public void load(){
+    webEngine.load(this.process.getBasic().getSite());
+    webEngine.getLoadWorker().stateProperty().addListener(
+        new ClickListener(browser, treePane, pickEnabledField::isSelected));
   }
 
   public void fillAddressToStart(){

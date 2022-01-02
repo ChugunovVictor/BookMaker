@@ -12,6 +12,7 @@ public class Process {
   public Content getContent() { return content_; }
   public Preview getPreview() { return preview_; }
 
+  // for unmarshalling
   public void setBasic_(Basic value) { this.basic_ = value; }
   public void setContent_(Content value) { this.content_ = value; }
   public void setPreview_(Preview value) { this.preview_ = value; }

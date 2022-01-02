@@ -2,8 +2,7 @@ package org.chugunov;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
-import org.chugunov.books.Book;
-import org.chugunov.books.Comics;
+import org.chugunov.books.Book2;
 import org.chugunov.books.Novel;
 import org.chugunov.model.Process;
 import org.chugunov.utility.PreText;
@@ -21,7 +20,7 @@ public class BookMaker {
 
     public BookMaker(Process process) {
         try(PDDocument document = new PDDocument()){
-            Book draft = process.getBasic().getType().createBook(document, process);
+            Book2 draft = new Novel(document, process);
 
             // createBookContent
             PDPage title_page = draft.createTitlePage();

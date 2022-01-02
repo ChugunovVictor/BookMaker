@@ -7,9 +7,6 @@
           fx:controller="org.chugunov.ui.controllers.BasicController"
           stylesheets="@../css/processTabPage.css">
     <children>
-        <Label text="Type" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-        <ComboBox fx:id="typeField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-
         <Label text="URL" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
         <TextField fx:id="siteField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
 
@@ -19,14 +16,20 @@
         <Label text="Title" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
         <TextField fx:id="titleField" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
 
-        <Label text="Path" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
-        <HBox GridPane.rowIndex="4" GridPane.columnIndex="1">
+        <Label text="Login" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+        <TextField fx:id="loginField" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+        <Label text="Password" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+        <TextField fx:id="passwordField" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+
+        <Label text="Path" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+        <HBox GridPane.rowIndex="6" GridPane.columnIndex="1">
             <TextField fx:id="outputPathField"/>
             <Button text="..." onAction="#chooseDirectory"></Button>
         </HBox>
 
-        <Label text="Examples" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
-        <ComboBox fx:id="examplesField" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+        <Label text="Examples" GridPane.rowIndex="7" GridPane.columnIndex="0"/>
+        <ComboBox fx:id="examplesField" GridPane.rowIndex="7" GridPane.columnIndex="1"/>
     </children>
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0" percentWidth="25.0"/>

@@ -20,11 +20,6 @@ public class Content {
   public String getSelectorTitle() { return selectorTitle_.getValue(); }
   public String getSelectorNavigationNext() { return selectorNavigationNext_.getValue(); }
 
-  public Content addressToStart(String value) { this.addressToStart_.setValue(value); return this; }
-  public Content selectorContent(String value) { this.selectorContent_.setValue(value); return this; }
-  public Content selectorTitle(String value) { this.selectorTitle_.setValue(value); return this; }
-  public Content selectorNavigationNext(String value) { this.selectorNavigationNext_.setValue(value); return this; }
-
   public void setAddressToStart_(String value) { this.addressToStart_.setValue(value); }
   public void setSelectorContent_(String value) { this.selectorContent_.setValue(value); }
   public void setSelectorTitle_(String value) { this.selectorTitle_.setValue(value); }

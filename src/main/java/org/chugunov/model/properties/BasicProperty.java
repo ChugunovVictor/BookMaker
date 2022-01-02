@@ -1,16 +1,13 @@
 package org.chugunov.model.properties;
 
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import org.chugunov.model.Basic;
-import org.chugunov.model.Type;
 
 public class BasicProperty extends Property{
 
   private Basic value;
 
-  private TextField siteField, authorField, titleField, outputPathField;
-  private ComboBox<Type> typeField;
+  private TextField siteField, authorField, titleField, outputPathField, loginField, passwordPathField;
 
   public BasicProperty(Basic value) {
     this.value = value;
@@ -40,9 +37,15 @@ public class BasicProperty extends Property{
     return this;
   }
 
-  public BasicProperty type(ComboBox<Type> value) {
-    this.typeField = value;
-    biDirectionalBindList(this.typeField, this.value.getTypeProperty(), this.value::setType_);
+  public BasicProperty login(TextField value) {
+    this.loginField = value;
+    biDirectionalBindText(this.loginField, this.value.getLoginProperty(), this.value::setLogin_);
+    return this;
+  }
+
+  public BasicProperty password(TextField value) {
+    this.passwordPathField = value;
+    biDirectionalBindText(this.passwordPathField, this.value.getPasswordProperty(), this.value::setPassword_);
     return this;
   }
 

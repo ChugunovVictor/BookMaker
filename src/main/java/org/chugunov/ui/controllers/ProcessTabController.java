@@ -13,7 +13,7 @@ import org.jsoup.internal.StringUtil;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ProcessTabController implements Initializable, Controller {
+public class ProcessTabController extends Controller implements Initializable {
   @FXML
   private Accordion accordion;
   @FXML
@@ -69,6 +69,7 @@ public class ProcessTabController implements Initializable, Controller {
         });
       } else {
         if (newPane != null) active = newPane;
+        if (newPane == content) contentPageController.load();
       }
     });
   }

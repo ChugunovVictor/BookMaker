@@ -15,7 +15,7 @@ import org.chugunov.utility.PostText;
 import org.chugunov.utility.Text;
 import org.chugunov.model.Process;
 
-public class Novel extends Book{
+public class Novel extends Book2 {
 
     List<PostText> paragraph;
     List<PostText> toc;

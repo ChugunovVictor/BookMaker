@@ -13,7 +13,7 @@ import org.chugunov.ui.Controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class PreviewController implements Initializable, Controller {
+public class PreviewController extends Controller implements Initializable {
   @FXML private Spinner numberOfBlocksOnPageField, debugDepthField;
   @FXML private CheckBox debugField;
   @FXML private Label debugDepthLabel;

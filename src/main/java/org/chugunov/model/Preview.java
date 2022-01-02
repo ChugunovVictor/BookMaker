@@ -20,10 +20,6 @@ public class Preview {
   public int getDebugDepth() { return debugDepth_.getValue(); }
   public int getNumberOfBlocksOnPage() { return numberOfBlocksOnPage_.getValue(); }
 
-  public Preview debug(boolean value) { this.debug_.setValue(value); return this; }
-  public Preview debugDepth(int value) { this.debugDepth_.setValue(value); return this; }
-  public Preview numberOfBlocksOnPage(int value) { this.numberOfBlocksOnPage_.setValue(value); return this; }
-
   public void setDebug_(boolean value) { this.debug_.setValue(value); }
   public void setDebugDepth_(int value) { this.debugDepth_.setValue(value); }
   public void setNumberOfBlocksOnPage_(int value) { this.numberOfBlocksOnPage_.setValue(value); }

@@ -4,7 +4,8 @@
       "site_": "https://parahumans.wordpress.com/",
       "author_": "John McCrae",
       "title_": "Worm",
-      "type_": "NOVEL"
+      "login_": "",
+      "password_": ""
     },
     "content_": {
       "addressToStart_": "https://parahumans.wordpress.com/2011/06/11/1-1/",
@@ -22,7 +23,8 @@
       "site_": "http://www.twogag.com/",
       "author_": "Rickard Jonasson",
       "title_": "TwoGuysAndGuy",
-      "type_": "COMICS"
+      "login_": "",
+      "password_": ""
     },
     "content_": {
       "addressToStart_": "http://www.twogag.com/archives/4/",
