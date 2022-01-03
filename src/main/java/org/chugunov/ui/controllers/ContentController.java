@@ -6,17 +6,18 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-import org.chugunov.model.properties.ContentProperty;
+import org.chugunov.model.Content;
 import org.chugunov.model.Process;
+import org.chugunov.ui.BiDirectional;
 import org.chugunov.ui.ClickListener;
-import org.chugunov.ui.Controller;
+import org.chugunov.ui.BiDirectionalController;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.IOException;
 
-public class ContentController extends Controller {
+public class ContentController extends BiDirectionalController {
   @FXML
   private WebView browser;
   @FXML
@@ -29,18 +30,16 @@ public class ContentController extends Controller {
   private CheckBox pickEnabledField;
 
   private Process process;
-  private ContentProperty contentProperty;
+
+  @BiDirectional
+  private Content content;
   private WebEngine webEngine;
 
   public void init(Process target) {
     this.webEngine = browser.getEngine();
     this.process= target;
-    this.contentProperty = new ContentProperty(this.process.getContent());
-    this.contentProperty = contentProperty
-        .addressToStart(addressToStartField)
-        .selectorContent(selectorContentField)
-        .selectorNavigationNext(selectorNavigationNextField)
-        .selectorTitle(selectorTitleField);
+    this.content = this.process.getContent();
+    super.init();
   }
 
   public void load(){

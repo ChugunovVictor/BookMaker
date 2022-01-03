@@ -1,32 +1,26 @@
 package org.chugunov.model;
 
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.*;
 
 public class Preview {
 
-  private SimpleBooleanProperty debug_ = new SimpleBooleanProperty(false);
-  private SimpleIntegerProperty debugDepth_ = new SimpleIntegerProperty(3);
-  private SimpleIntegerProperty numberOfBlocksOnPage_ = new SimpleIntegerProperty(40);
+  private BooleanProperty debug = new SimpleBooleanProperty(false);
+  private IntegerProperty debugDepth = new SimpleIntegerProperty(3);
+  private IntegerProperty numberOfBlocksOnPage = new SimpleIntegerProperty(40);
 
   public Preview(){}
 
-  public SimpleBooleanProperty isDebugProperty() { return debug_; }
-  public SimpleIntegerProperty getDebugDepthProperty() { return debugDepth_; }
-  public SimpleIntegerProperty getNumberOfBlocksOnPageProperty() { return numberOfBlocksOnPage_; }
+  public boolean isDebug() { return debug.getValue(); }
+  public int getDebugDepth() { return debugDepth.getValue(); }
+  public int getNumberOfBlocksOnPage() { return numberOfBlocksOnPage.getValue(); }
 
-  public boolean isDebug() { return debug_.getValue(); }
-  public int getDebugDepth() { return debugDepth_.getValue(); }
-  public int getNumberOfBlocksOnPage() { return numberOfBlocksOnPage_.getValue(); }
-
-  public void setDebug_(boolean value) { this.debug_.setValue(value); }
-  public void setDebugDepth_(int value) { this.debugDepth_.setValue(value); }
-  public void setNumberOfBlocksOnPage_(int value) { this.numberOfBlocksOnPage_.setValue(value); }
+  public void setDebug(boolean value) { this.debug.setValue(value); }
+  public void setDebugDepth(int value) { this.debugDepth.setValue(value); }
+  public void setNumberOfBlocksOnPage(int value) { this.numberOfBlocksOnPage.setValue(value); }
 
   public void copy(Preview newValue){
-    this.setDebug_(newValue.isDebug());
-    this.setNumberOfBlocksOnPage_(newValue.getNumberOfBlocksOnPage());
-    this.setDebugDepth_(newValue.getDebugDepth());
+    this.setDebug(newValue.isDebug());
+    this.setNumberOfBlocksOnPage(newValue.getNumberOfBlocksOnPage());
+    this.setDebugDepth(newValue.getDebugDepth());
   }
 }

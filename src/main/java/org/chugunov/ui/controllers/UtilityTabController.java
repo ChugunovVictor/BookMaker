@@ -1,6 +1,6 @@
 package org.chugunov.ui.controllers;
 
-import org.chugunov.ui.Controller;
+import org.chugunov.ui.BiDirectionalController;
 
-public class UtilityTabController extends Controller {
+public class UtilityTabController extends BiDirectionalController {
 }

@@ -1,4 +1,4 @@
-package org.chugunov.utility;
+package org.chugunov.ui;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

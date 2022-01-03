@@ -7,13 +7,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TitledPane;
-import org.chugunov.ui.Controller;
+import org.chugunov.ui.BiDirectionalController;
 import org.jsoup.internal.StringUtil;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ProcessTabController extends Controller implements Initializable {
+public class ProcessTabController extends BiDirectionalController implements Initializable {
   @FXML
   private Accordion accordion;
   @FXML

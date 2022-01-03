@@ -2,35 +2,27 @@ package org.chugunov.ui.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.chugunov.model.Basic;
-import org.chugunov.model.Basic2;
-import org.chugunov.model.properties.BasicProperty;
 import org.chugunov.model.Process;
-import org.chugunov.ui.Controller;
-import org.chugunov.utility.BiDirectional;
+import org.chugunov.ui.BiDirectional;
+import org.chugunov.ui.BiDirectionalController;
 
 import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class BasicController extends Controller implements Initializable {
+public class BasicController extends BiDirectionalController implements Initializable {
   private javafx.stage.DirectoryChooser path = new javafx.stage.DirectoryChooser();
 
   private Process process;
 
-  private BasicProperty basicProperty;
-
   @BiDirectional
-  private Basic2 basic;
+  private Basic basic;
 
   @FXML private ComboBox<Process> examplesField;
   @FXML private TextField siteField, authorField, titleField, outputPathField, loginField, passwordField;
@@ -54,24 +46,12 @@ public class BasicController extends Controller implements Initializable {
 
   public void init(Process target) {
     this.process = target;
-    this.basic = new Basic2();
-    this.basicProperty = new BasicProperty(this.process.getBasic());
-    this.basicProperty = basicProperty.site(siteField)
-        .author(authorField)
-        .title(titleField)
-        .outputPath(outputPathField)
-        .login(loginField)
-        .password(passwordField);
-
-    try {
-      this.processBinding();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    this.basic = this.process.getBasic();
+    super.init();
   }
 
   public void chooseDirectory() {
     File dir = path.showDialog((Stage) examplesField.getScene().getWindow());
-    this.process.getBasic().setOutputPath_(dir != null ? dir.getAbsolutePath() : "");
+    this.process.getBasic().setOutputPath(dir != null ? dir.getAbsolutePath() : "");
   }
 }

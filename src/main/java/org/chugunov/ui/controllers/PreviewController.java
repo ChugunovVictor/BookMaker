@@ -6,20 +6,21 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import org.chugunov.BookMaker;
-import org.chugunov.model.properties.PreviewProperty;
+import org.chugunov.model.Preview;
 import org.chugunov.model.Process;
-import org.chugunov.ui.Controller;
+import org.chugunov.ui.BiDirectional;
+import org.chugunov.ui.BiDirectionalController;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class PreviewController extends Controller implements Initializable {
+public class PreviewController extends BiDirectionalController implements Initializable {
   @FXML private Spinner numberOfBlocksOnPageField, debugDepthField;
   @FXML private CheckBox debugField;
   @FXML private Label debugDepthLabel;
 
   private Process target;
-  private PreviewProperty previewProperty;
+  @BiDirectional private Preview preview;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -34,11 +35,8 @@ public class PreviewController extends Controller implements Initializable {
 
   public void init(Process target){
     this.target = target;
-    this.previewProperty = new PreviewProperty(this.target.getPreview());
-    this.previewProperty = this.previewProperty
-        .debug(debugField)
-        .debugDepth(debugDepthField)
-        .numberOfBlocksOnPage(numberOfBlocksOnPageField);
+    this.preview = this.target.getPreview();
+    super.init();
   }
 
   public void proceed() {

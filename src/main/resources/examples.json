@@ -1,40 +1,36 @@
 [
   {
-    "basic_": {
-      "site_": "https://parahumans.wordpress.com/",
-      "author_": "John McCrae",
-      "title_": "Worm",
-      "login_": "",
-      "password_": ""
+    "basic": {
+      "site": "https://parahumans.wordpress.com/",
+      "author": "John McCrae",
+      "title": "Worm"
     },
-    "content_": {
-      "addressToStart_": "https://parahumans.wordpress.com/2011/06/11/1-1/",
-      "selectorContent_": "#content .entry-content p:not(p:contains(Next Chapter))",
-      "selectorTitle_": "#content .entry-title",
-      "selectorNavigationNext_": "#content .nav-next a[href]"
+    "content": {
+      "addressToStart": "https://parahumans.wordpress.com/2011/06/11/1-1/",
+      "selectorContent": "#content .entry-content p:not(p:contains(Next Chapter))",
+      "selectorTitle": "#content .entry-title",
+      "selectorNavigationNext": "#content .nav-next a[href]"
     },
-    "preview_": {
-      "numberOfBlocksOnPage_": 38,
-      "debug_": false
+    "preview": {
+      "numberOfBlocksOnPage": 38,
+      "debug": false
     }
   },
   {
-    "basic_": {
-      "site_": "http://www.twogag.com/",
-      "author_": "Rickard Jonasson",
-      "title_": "TwoGuysAndGuy",
-      "login_": "",
-      "password_": ""
+    "basic": {
+      "site": "http://www.twogag.com/",
+      "author": "Rickard Jonasson",
+      "title": "TwoGuysAndGuy"
     },
-    "content_": {
-      "addressToStart_": "http://www.twogag.com/archives/4/",
-      "selectorContent_": "#cc-comic",
-      "selectorTitle_": "#bottomleft .cc-newsheader",
-      "selectorNavigationNext_": "#navbar .cc-next"
+    "content": {
+      "addressToStart": "http://www.twogag.com/archives/4/",
+      "selectorContent": "#cc-comic",
+      "selectorTitle": "#bottomleft .cc-newsheader",
+      "selectorNavigationNext": "#navbar .cc-next"
     },
-    "preview_": {
-      "numberOfBlocksOnPage_": 3,
-      "debug_": false
+    "preview": {
+      "numberOfBlocksOnPage": 3,
+      "debug": false
     }
   }
 ]

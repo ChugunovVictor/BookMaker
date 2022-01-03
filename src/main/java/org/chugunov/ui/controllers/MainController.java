@@ -4,7 +4,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import org.chugunov.ui.Controller;
+import org.chugunov.ui.BiDirectionalController;
 
 public class MainController {
 
@@ -39,7 +39,7 @@ public class MainController {
         });
   }
 
-  public Controller getController(String type) {
+  public BiDirectionalController getController(String type) {
     switch (type) {
       case "Process":
         return processTabPageController;

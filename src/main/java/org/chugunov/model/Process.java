@@ -2,20 +2,20 @@ package org.chugunov.model;
 
 public class Process {
 
-  private Basic basic_ = new Basic();
-  private Content content_ = new Content();
-  private Preview preview_ = new Preview();
+  private Basic basic = new Basic();
+  private Content content = new Content();
+  private Preview preview = new Preview();
 
   public Process(){}
 
-  public Basic getBasic() { return basic_; }
-  public Content getContent() { return content_; }
-  public Preview getPreview() { return preview_; }
+  public Basic getBasic() { return basic; }
+  public Content getContent() { return content; }
+  public Preview getPreview() { return preview; }
 
   // for unmarshalling
-  public void setBasic_(Basic value) { this.basic_ = value; }
-  public void setContent_(Content value) { this.content_ = value; }
-  public void setPreview_(Preview value) { this.preview_ = value; }
+  public void setBasic(Basic value) { this.basic = value; }
+  public void setContent(Content value) { this.content = value; }
+  public void setPreview(Preview value) { this.preview = value; }
 
   public void copy(Process newValue){
     this.getBasic().copy(newValue.getBasic());
@@ -25,6 +25,6 @@ public class Process {
 
   @Override
   public String toString() {
-    return basic_.getTitle() + " (" + basic_.getSite() + ")";
+    return basic.getTitle() + " (" + basic.getSite() + ")";
   }
 }

@@ -1,24 +1,36 @@
 package org.chugunov.ui;
 
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 import javafx.util.Pair;
-import org.chugunov.utility.BiDirectional;
+import org.chugunov.model.Process;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
-public abstract class Controller {
+public abstract class BiDirectionalController {
 
   private Map<String, Field> controllerFields = new HashMap<>();
   private Map<String, Pair<Field, Field>> bindFields = new HashMap<>();
 
-  public Controller() {
+  public BiDirectionalController() {
+  }
 
+  public void init() {
+    try {
+      this.processBinding();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   public void processBinding() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
@@ -52,21 +64,22 @@ public abstract class Controller {
     }
   }
 
-//  void biDirectionalBindText(TextField ui, StringProperty object, Consumer<String> method) {
-//    ui.textProperty().addListener((observable, oldValue, newValue) -> {method.accept(newValue);});
-//    object.addListener((observable, oldValue, newValue) -> {ui.setText(newValue);});
-//  }
-
   private void bind(Field a, Field b, Object obj) throws IllegalAccessException {
-    StringProperty bProp = ((TextField) b.get(this)).textProperty();
-    bProp.addListener(
-        (observable, oldValue, newValue) -> {
-          try { a.set(obj, newValue); }
-          catch (IllegalAccessException e) { e.printStackTrace(); }
-        }
-    );
-    StringProperty aProp = new SimpleStringProperty((String) a.get(obj));
-    aProp.bindBidirectional(bProp);
+    if(b.getType() == TextField.class){
+      StringProperty bProp = ((TextField) b.get(this)).textProperty();
+      StringProperty aProp = (StringProperty) a.get(obj);
+      aProp.bindBidirectional(bProp);
+    }
+    if(b.getType() == Spinner.class){
+      ObjectProperty bProp = ((Spinner) b.get(this)).getValueFactory().valueProperty();
+      IntegerProperty aProp = (IntegerProperty) a.get(obj);
+      aProp.bindBidirectional(bProp);
+    }
+    if(b.getType() == CheckBox.class){
+      BooleanProperty bProp = ((CheckBox) b.get(this)).selectedProperty();
+      BooleanProperty aProp = (BooleanProperty) a.get(obj);
+      aProp.bindBidirectional(bProp);
+    }
   }
 
 }
