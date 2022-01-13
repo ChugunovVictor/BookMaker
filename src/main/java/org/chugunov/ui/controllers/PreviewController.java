@@ -5,7 +5,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
+import javafx.scene.layout.VBox;
 import org.chugunov.BookMaker;
+import org.chugunov.books.BookFX;
 import org.chugunov.model.Preview;
 import org.chugunov.model.Process;
 import org.chugunov.ui.BiDirectional;
@@ -15,9 +17,11 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class PreviewController extends BiDirectionalController implements Initializable {
-  @FXML private Spinner numberOfBlocksOnPageField, debugDepthField;
+  @FXML private Spinner paddingTopField, paddingRightField, paddingBottomField, paddingLeftField,
+      debugDepthField, fontSizeField;
   @FXML private CheckBox debugField;
   @FXML private Label debugDepthLabel;
+  @FXML private VBox previewField;
 
   private Process target;
   @BiDirectional private Preview preview;
@@ -37,6 +41,12 @@ public class PreviewController extends BiDirectionalController implements Initia
     this.target = target;
     this.preview = this.target.getPreview();
     super.init();
+  }
+
+  public void load(){
+    this.previewField.getChildren().clear();
+    this.preview.setDebug(true);
+    new BookFX(this.target, this.previewField).process();
   }
 
   public void proceed() {

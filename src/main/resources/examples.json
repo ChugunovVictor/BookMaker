@@ -12,7 +12,6 @@
       "selectorNavigationNext": "#content .nav-next a[href]"
     },
     "preview": {
-      "numberOfBlocksOnPage": 38,
       "debug": false
     }
   },
@@ -29,7 +28,6 @@
       "selectorNavigationNext": "#navbar .cc-next"
     },
     "preview": {
-      "numberOfBlocksOnPage": 3,
       "debug": false
     }
   }

@@ -56,16 +56,18 @@ public class Novel extends Book2 {
         
         int place_for_title = 2;
         int strings_left = p.context.size() + place_for_title;
+        int numberOfBlocksOnPage = 40;
+
         int from = 0;
-        int to = process.getPreview().getNumberOfBlocksOnPage() - place_for_title;
+        int to = numberOfBlocksOnPage - place_for_title;
         
-        while( strings_left > process.getPreview().getNumberOfBlocksOnPage() ){
+        while( strings_left > numberOfBlocksOnPage ){
             result.add(createPage( p.title, page_counter, p.context.subList(from, to),
-                (process.getPreview().getNumberOfBlocksOnPage() - 2) == (to - from), is_toc
+                (numberOfBlocksOnPage - 2) == (to - from), is_toc
             ));
             from = to;
-            to += process.getPreview().getNumberOfBlocksOnPage();
-            strings_left -= process.getPreview().getNumberOfBlocksOnPage();
+            to += numberOfBlocksOnPage;
+            strings_left -= numberOfBlocksOnPage;
             page_counter ++;
         }
         if (strings_left != 0)
@@ -154,6 +156,7 @@ public class Novel extends Book2 {
     
     public List<PostText> prepare(List <? extends Text> materialForBook){
         int page_counter = 2;
+        int numberOfBlocksOnPage = 40;
         //int pages_to_toc = calculatePages(materialForBook.size(), number_of_rows_on_page);
         List<PostText> prepare_paragraph = new ArrayList<>();
         
@@ -163,7 +166,7 @@ public class Novel extends Book2 {
                 strings.addAll(calculateLines(font_standart, c));
             }
             prepare_paragraph.add(new PostText(page_counter, p.title, strings));
-            page_counter += calculatePages(strings.size(), process.getPreview().getNumberOfBlocksOnPage());
+            page_counter += calculatePages(strings.size(), numberOfBlocksOnPage);
         }
         
         return prepare_paragraph;

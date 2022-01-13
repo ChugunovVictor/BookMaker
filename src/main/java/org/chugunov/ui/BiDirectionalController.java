@@ -9,13 +9,10 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 import javafx.util.Pair;
-import org.chugunov.model.Process;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Consumer;
 
 public abstract class BiDirectionalController {
 
@@ -33,7 +30,7 @@ public abstract class BiDirectionalController {
     }
   }
 
-  public void processBinding() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+  public void processBinding() throws IllegalAccessException {
     final Field[] fields = this.getClass().getDeclaredFields();
     for (int i = 0; i < fields.length; ++i) {
       final Field field = fields[i];

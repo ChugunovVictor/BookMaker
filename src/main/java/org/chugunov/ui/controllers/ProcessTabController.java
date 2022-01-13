@@ -70,6 +70,7 @@ public class ProcessTabController extends BiDirectionalController implements Ini
       } else {
         if (newPane != null) active = newPane;
         if (newPane == content) contentPageController.load();
+        if (newPane == preview) previewPageController.load();
       }
     });
   }

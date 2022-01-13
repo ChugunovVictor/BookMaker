@@ -1,6 +1,7 @@
 package org;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.tools.javac.util.StringUtils;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
@@ -14,12 +15,23 @@ import org.chugunov.ui.controllers.BasicController;
 import org.chugunov.ui.controllers.MainController;
 import org.chugunov.ui.controllers.ProcessTabController;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.math.BigInteger;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Main extends Application {
+
+
+
+
+
+
+
+
   public static void main(String[] args) throws URISyntaxException, IOException {
     launch(args);
 
@@ -28,6 +40,7 @@ public class Main extends Application {
 //    Process[] examples = objectMapper.readValue(new File(resource.toURI()), Process[].class);
 //
 //    Book b = new BookPDF(examples[0]);
+//    b.process();
   }
 
   //boolean prepare_to_print = true;

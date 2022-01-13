@@ -8,23 +8,61 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.CheckBox?>
-<GridPane vgap="5" xmlns:fx="http://www.w3.org/2001/XInclude" fx:controller="org.chugunov.ui.controllers.PreviewController">
-    <children>
-        <Label text="Blocks On Page" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-        <Spinner fx:id="numberOfBlocksOnPageField" min="1" max="100" GridPane.rowIndex="0"
-                 GridPane.columnIndex="1"/>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ScrollPane?>
+<HBox xmlns:fx="http://www.w3.org/2001/XInclude" fx:controller="org.chugunov.ui.controllers.PreviewController">
+    <padding>
+        <Insets top="5" right="5" bottom="5" left="5"/>
+    </padding>
+    <GridPane prefWidth="400">
+        <children>
+            <TitledPane text="Padding" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                        collapsible="false">
+                <GridPane vgap="5" hgap="5">
+                    <children>
+                        <Label text="Top" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                        <Spinner fx:id="paddingTopField" min="1" max="100" GridPane.rowIndex="0"
+                                 GridPane.columnIndex="1"/>
 
-        <Label text="Debug" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-        <CheckBox fx:id="debugField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                        <Label text="Right" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                        <Spinner fx:id="paddingRightField" min="1" max="100" GridPane.rowIndex="1"
+                                 GridPane.columnIndex="1"/>
 
-        <Label fx:id="debugDepthLabel" text="Debug Depth" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-        <Spinner fx:id="debugDepthField" min="1" max="10" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                        <Label text="Bottom" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                        <Spinner fx:id="paddingBottomField" min="1" max="100" GridPane.rowIndex="2"
+                                 GridPane.columnIndex="1"/>
 
-        <Button fx:id="btn" text="Proceed" onAction="#proceed" GridPane.rowIndex="3"
-                GridPane.columnIndex="1"></Button>
-    </children>
-    <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0" percentWidth="25.0"/>
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0" percentWidth="75.0"/>
-    </columnConstraints>
-</GridPane>
+                        <Label text="Left" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                        <Spinner fx:id="paddingLeftField" min="1" max="100" GridPane.rowIndex="3"
+                                 GridPane.columnIndex="1"/>
+                    </children>
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0" percentWidth="20.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0" percentWidth="80.0"/>
+                    </columnConstraints>
+                </GridPane>
+            </TitledPane>
+
+            <Label text="Font Size" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <Spinner fx:id="fontSizeField" min="5" max="40" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+            <Label text="Debug" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <CheckBox fx:id="debugField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+            <Label fx:id="debugDepthLabel" text="Debug Depth" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+            <Spinner fx:id="debugDepthField" min="1" max="10" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+            <Button fx:id="btn" text="Proceed" onAction="#proceed" GridPane.rowIndex="4"
+                    GridPane.columnIndex="1"></Button>
+        </children>
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0" percentWidth="25.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0" percentWidth="75.0"/>
+        </columnConstraints>
+    </GridPane>
+    <ScrollPane vbarPolicy="ALWAYS" hbarPolicy="NEVER" prefWidth="800">
+        <VBox fx:id="previewField" fillWidth="true"></VBox>
+    </ScrollPane>
+</HBox>

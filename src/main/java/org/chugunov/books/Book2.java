@@ -165,30 +165,32 @@ public abstract class Book2 {
     
     public void printParagraph( PreText current, PDDocument doc, boolean isTOC, ArrayList<PreText> material) throws IOException {
         int page_counter = current.page_for_table_of_content;
-        
+
+        int numberOfBlocksOnPage = 40;
+
         if(isTOC){
             for (int i=0; i< material.size();  )
             {
                 if ( i == 0 ) // add string with paragraph title 
                 {
                     /* -2 because title has x2 font */
-                    int finalDestination = i + process.getPreview().getNumberOfBlocksOnPage() - 1;
+                    int finalDestination = i + numberOfBlocksOnPage - 1;
                     if ( finalDestination > material.size() ) finalDestination = material.size();
 
                     //current.pages.add( printTOCPage(doc, material.subList(i, finalDestination ), fontSize, margin , current.title, page_counter, true));
                     
                     page_counter++;
 
-                    i+= process.getPreview().getNumberOfBlocksOnPage() - 1;
+                    i+= numberOfBlocksOnPage - 1;
                 }else{
-                    int finalDestination = i + process.getPreview().getNumberOfBlocksOnPage();
+                    int finalDestination = i + numberOfBlocksOnPage;
                     if ( finalDestination > material.size() ) finalDestination = material.size();
 
                     //current.pages.add(printTOCPage(doc, material.subList(i, finalDestination ), fontSize, margin , current.title, page_counter, false));
                     
                     page_counter++;
 
-                    i+= process.getPreview().getNumberOfBlocksOnPage();
+                    i+= numberOfBlocksOnPage;
                 }
             }
         }else{
@@ -197,22 +199,22 @@ public abstract class Book2 {
                 if ( i == 0 ) // add string with paragraph title 
                 {
                     /* -2 because title has x2 font */
-                    int finalDestination = i + process.getPreview().getNumberOfBlocksOnPage() - 2;
+                    int finalDestination = i + numberOfBlocksOnPage - 2;
                     if ( finalDestination > current.lines.size() ) finalDestination = current.lines.size();
 
                    // current.pages.add(addPage( doc, current.lines.subList(i, finalDestination ), fontSize, margin , current.title, page_counter, true));
                     
                     page_counter++;
 
-                    i+= process.getPreview().getNumberOfBlocksOnPage() - 2;
+                    i+= numberOfBlocksOnPage - 2;
                 }else{
-                    int finalDestination = i + process.getPreview().getNumberOfBlocksOnPage();
+                    int finalDestination = i + numberOfBlocksOnPage;
                     if ( finalDestination > current.lines.size() ) finalDestination = current.lines.size();
 
                     //current.pages.add(addPage( doc, current.lines.subList(i, finalDestination ), fontSize, margin , current.title, page_counter, false));
                     page_counter++;
 
-                    i+= process.getPreview().getNumberOfBlocksOnPage();
+                    i+= numberOfBlocksOnPage;
                 }
             }
         }

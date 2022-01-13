@@ -19,18 +19,19 @@ public class Comics extends Book2 {
     @Override
     public List<PDPage> createContent(ArrayList <PreText> materialForBook) {
         ArrayList<PDPage> result_content = new ArrayList<>();
-        
+        int numberOfBlocksOnPage = 3;
+
         // Split all images in a groups of < number_of_images_on_page >
         List< PDImageXObject[] > listOfArraysOfImagesForEveryPage = new ArrayList<>();
-        PDImageXObject[] current = new PDImageXObject[process.getPreview().getNumberOfBlocksOnPage()];
-        int counterInArray = 0; int counterPerPage = process.getPreview().getNumberOfBlocksOnPage();
+        PDImageXObject[] current = new PDImageXObject[numberOfBlocksOnPage];
+        int counterInArray = 0; int counterPerPage = numberOfBlocksOnPage;
         for(PreText pt : materialForBook){
             for( int i=0; i<pt.contextImages.size(); i++ ){
                 if( counterPerPage == 0 ){
                     listOfArraysOfImagesForEveryPage.add(current);
-                    current = new PDImageXObject[process.getPreview().getNumberOfBlocksOnPage()];
+                    current = new PDImageXObject[numberOfBlocksOnPage];
                     counterInArray = 0; 
-                    counterPerPage = process.getPreview().getNumberOfBlocksOnPage();
+                    counterPerPage = numberOfBlocksOnPage;
                 }
                 current[counterInArray] = pt.contextImages.get(i);
                 counterInArray++; counterPerPage--;
@@ -46,12 +47,12 @@ public class Comics extends Book2 {
         int padding = 15;
         
         float w_scale = etalonImage.getWidth() / ( etalonPage.getMediaBox().getWidth() - padding * 2 );
-        float h_scale = etalonImage.getHeight() / ( etalonPage.getMediaBox().getHeight() / process.getPreview().getNumberOfBlocksOnPage() - padding * ( 2 + process.getPreview().getNumberOfBlocksOnPage() - 1 ));
+        float h_scale = etalonImage.getHeight() / ( etalonPage.getMediaBox().getHeight() / numberOfBlocksOnPage - padding * ( 2 + numberOfBlocksOnPage - 1 ));
         float scale = w_scale /*> h_scale ? w_scale : h_scale*/;
         float w_size = etalonImage.getWidth() / scale;
         float h_size = etalonImage.getHeight() / scale;
         
-        float space = (etalonPage.getMediaBox().getHeight() - h_size * process.getPreview().getNumberOfBlocksOnPage()) / process.getPreview().getNumberOfBlocksOnPage();
+        float space = (etalonPage.getMediaBox().getHeight() - h_size * numberOfBlocksOnPage) / numberOfBlocksOnPage;
         float vertical_padding = etalonPage.getMediaBox().getHeight() - space * 0.7f - h_size;
         float interval = space * 0.6f;
                 
