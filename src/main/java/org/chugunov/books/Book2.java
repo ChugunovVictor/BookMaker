@@ -12,6 +12,7 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.interactive.action.PDActionGoTo;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotation;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationLink;
+import org.apache.pdfbox.pdmodel.interactive.annotation.PDBorderStyleDictionary;
 import org.apache.pdfbox.pdmodel.interactive.documentnavigation.destination.PDPageXYZDestination;
 import org.chugunov.utility.PreText;
 import org.chugunov.model.Process;
@@ -90,7 +91,7 @@ public abstract class Book2 {
                 margin, offset_link_y, target_page.getMediaBox().getWidth() - margin* 2, 10
             );
             pageLink.setRectangle(position);
-            
+
             PDActionGoTo actionGoto = new PDActionGoTo();
             PDPageXYZDestination dest = new PDPageXYZDestination();
             dest.setPage(link_to.get(page_number));
@@ -99,11 +100,11 @@ public abstract class Book2 {
 
             actionGoto.setDestination(dest);
             pageLink.setAction(actionGoto);
-/*
+
             PDBorderStyleDictionary border = new PDBorderStyleDictionary();
             border.setWidth( 0f );
             pageLink.setBorderStyle( border );
-*/
+
             annotations.add(pageLink);
             
             offset_x = 0;
@@ -166,7 +167,7 @@ public abstract class Book2 {
     public void printParagraph( PreText current, PDDocument doc, boolean isTOC, ArrayList<PreText> material) throws IOException {
         int page_counter = current.page_for_table_of_content;
 
-        int numberOfBlocksOnPage = 40;
+        int numberOfBlocksOnPage = 39;
 
         if(isTOC){
             for (int i=0; i< material.size();  )

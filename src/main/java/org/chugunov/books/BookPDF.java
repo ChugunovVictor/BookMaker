@@ -18,6 +18,20 @@ public class BookPDF extends Book <PDPage> {
   }
 
   @Override
+  PDPage createPage() {
+    return null;
+  }
+
+  @Override
+  void printDecor(PDPage pdPage, String title, int pageNumber) {
+
+  }
+
+  @Override
+  void printText(PDPage pdPage, String text, int pageNumber) {
+
+  }
+
   PDPage createPage(Collection<? extends Content> content) {
     return null;
   }

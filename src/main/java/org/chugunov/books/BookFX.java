@@ -51,7 +51,6 @@ public class BookFX extends Book <Node> {
       return new Label("image");
   }
 
-  @Override
   Node createPage(Collection<? extends Content> content){
     Pane page = new Pane();
     String cssLayout = "-fx-border-color: grey; " +
@@ -68,5 +67,20 @@ public class BookFX extends Book <Node> {
 //    return content.stream().map(c -> createNode(c)).reduce(new VBox(), (a, c) -> {
 //      ((VBox)a).getChildren().add(c); return c;
 //    });
+  }
+
+  @Override
+  Node createPage() {
+    return null;
+  }
+
+  @Override
+  void printDecor(Node node, String title, int pageNumber) {
+
+  }
+
+  @Override
+  void printText(Node node, String text, int pageNumber) {
+
   }
 }

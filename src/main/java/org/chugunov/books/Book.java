@@ -36,18 +36,19 @@ public abstract class Book<Page> {
     Page current = createPage();
     printDecor(current, title, pageNumber);
 
-    content.forEach((Text c) -> printText(current, c.getLines(), c.getFont(), c.getFontSize());
-    printText(strings.toArray(new String[]{}), font_standart, fontSize,
-        mediabox.getLowerLeftX() + margin,
-        mediabox.getUpperRightY() - margin * 1.4f - (is_Head_Start ?  leading*2 : 0),
-        -leading, contentStream);
+//    content.forEach((Text c) -> printText(current, c.getLines(), c.getFont(), c.getFontSize());
+//    printText(strings.toArray(new String[]{}), font_standart, fontSize,
+//        mediabox.getLowerLeftX() + margin,
+//        mediabox.getUpperRightY() - margin * 1.4f - (is_Head_Start ?  leading*2 : 0),
+//        -leading, contentStream);
+    return null;
   }
 
   List<Page> createChapter(String title, org.jsoup.select.Elements elements) {
     ContentGenerator cg = ContentGenerator.parse(title, elements,
         this.process.getPreview().getFontSize(),
         this.process.getPreview().getPadding());
-    return cg.make(this::createPage);
+    return Collections.EMPTY_LIST;//cg.make(this::createPage);
   }
 
   private Optional<String> getNavigationNext(Document doc, String selector) {
@@ -86,8 +87,9 @@ public abstract class Book<Page> {
 
     while (doc != null && debug_link_counter < process.getPreview().getDebugDepth()) {
       Optional<String> new_url = getNavigationNext(doc, process.getContent().getSelectorNavigationNext());
+
       String title = getTitle(doc, process.getContent().getSelectorTitle()).orElse("");
-      List<Page> pages = createChapter(doc.select(process.getContent().getSelectorContent()));
+      List<Page> pages = Collections.EMPTY_LIST;//createChapter(doc.select(process.getContent().getSelectorContent()));
       addParagraphToTableOfContents(title, pages);
 
       materialForBook.put(title, pages);

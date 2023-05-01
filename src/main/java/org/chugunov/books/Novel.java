@@ -56,7 +56,7 @@ public class Novel extends Book2 {
         
         int place_for_title = 2;
         int strings_left = p.context.size() + place_for_title;
-        int numberOfBlocksOnPage = 40;
+        int numberOfBlocksOnPage = 39;
 
         int from = 0;
         int to = numberOfBlocksOnPage - place_for_title;
@@ -156,7 +156,7 @@ public class Novel extends Book2 {
     
     public List<PostText> prepare(List <? extends Text> materialForBook){
         int page_counter = 2;
-        int numberOfBlocksOnPage = 40;
+        int numberOfBlocksOnPage = 39;
         //int pages_to_toc = calculatePages(materialForBook.size(), number_of_rows_on_page);
         List<PostText> prepare_paragraph = new ArrayList<>();
         
